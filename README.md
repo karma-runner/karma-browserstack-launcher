@@ -56,6 +56,7 @@ module.exports = function(config) {
 ### Global options
 - `username` your BS username (email), you can also use `BROWSER_STACK_USERNAME` env variable.
 - `accessKey` your BS access key (password), you can also use `BROWSER_STACK_ACCESS_KEY` env variable.
+- `startTunnel` do you wanna establish the BrowserStack tunnel ? (defaults to `true`)
 
 
 ### Per browser options
