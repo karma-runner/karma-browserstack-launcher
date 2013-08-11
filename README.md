@@ -45,10 +45,16 @@ module.exports = function(config) {
         browser: 'firefox',
         os: 'mac',
         version: '21.0'
+      },
+      bs_iphone5: {
+        base: 'BrowserStack',
+        device: 'iPhone 5',
+        os: 'ios',
+        version: '6.0'
       }
     },
 
-    browsers: ['bs_firefox_mac']
+    browsers: ['bs_firefox_mac', 'bs_iphone5']
   });
 };
 ```
@@ -60,6 +66,7 @@ module.exports = function(config) {
 
 
 ### Per browser options
+- `device` name of the device
 - `browser` name of the browser
 - `version` version of the browser
 - `os` which platform ?
