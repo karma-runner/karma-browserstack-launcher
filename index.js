@@ -5,7 +5,7 @@ var BrowserStackTunnel = require('browserstacktunnel-wrapper');
 
 var createBrowserStackTunnel = function(logger, config, emitter) {
   var log = logger.create('launcher.browserstack');
-  var bsConfig = config.browserStack;
+  var bsConfig = config.browserStack || {};
 
   if (bsConfig.startTunnel === false) {
     return q();
