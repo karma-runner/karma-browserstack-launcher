@@ -73,7 +73,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   var captured = false;
   var log = logger.create('launcher.browserstack');
   var browserName = (args.browser || args.device) + (args.version ? ' ' + args.version : '') +
-                    (args.os ? ' (' + args.os + ')' : '') + ' on BrowserStack';
+                    ' (' + args.os + ' ' + args.os_version +  ')' + ' on BrowserStack';
 
   this.id = id;
   this.name = browserName;
@@ -82,9 +82,10 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     // TODO(vojta): handle non os/browser/version
     var settings = {
       os: args.os,
+      os_version: args.os_version,
       device: args.device,
       browser: args.browser,
-      version: args.version || 'latest',
+      browser_version: args.version || 'latest',
       url: url + '?id=' + id
     };
 
