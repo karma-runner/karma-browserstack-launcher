@@ -2,11 +2,6 @@
 
 > Use any browser on [BrowserStack](http://www.browserstack.com/)!
 
-**NOTE:** You have to run local tunnel first:
-```bash
-$ java -jar BrowserStackTunnel.jar <KEY> localhost,9876,0
-```
-
 
 ## Installation
 
@@ -43,9 +38,9 @@ module.exports = function(config) {
       bs_firefox_mac: {
         base: 'BrowserStack',
         browser: 'firefox',
+        browser_version: '21.0',
         os: 'OS X',
-        os_versio: 'Mountain Lion',
-        version: '21.0'
+        os_version: 'Mountain Lion'
       },
       bs_iphone5: {
         base: 'BrowserStack',
@@ -69,9 +64,10 @@ module.exports = function(config) {
 ### Per browser options
 - `device` name of the device
 - `browser` name of the browser
-- `version` version of the browser
+- `browser_version` version of the browser
 - `os` which platform ?
 - `os_version` version of the platform
+
 
 For an example project of, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
 

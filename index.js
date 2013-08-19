@@ -85,7 +85,8 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       os_version: args.os_version,
       device: args.device,
       browser: args.browser,
-      browser_version: args.version || 'latest',
+      // TODO(vojta): remove "version" (only for B-C)
+      browser_version: args.browser_version || args.version || 'latest',
       url: url + '?id=' + id
     };
 
