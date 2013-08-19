@@ -43,14 +43,15 @@ module.exports = function(config) {
       bs_firefox_mac: {
         base: 'BrowserStack',
         browser: 'firefox',
-        os: 'mac',
+        os: 'OS X',
+        os_versio: 'Mountain Lion',
         version: '21.0'
       },
       bs_iphone5: {
         base: 'BrowserStack',
         device: 'iPhone 5',
         os: 'ios',
-        version: '6.0'
+        os_version: '6.0'
       }
     },
 
@@ -70,6 +71,7 @@ module.exports = function(config) {
 - `browser` name of the browser
 - `version` version of the browser
 - `os` which platform ?
+- `os_version` version of the platform
 
 For an example project of, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
 
