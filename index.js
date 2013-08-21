@@ -72,7 +72,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   var workerId = null;
   var captured = false;
   var log = logger.create('launcher.browserstack');
-  var browserName = (args.browser || args.device) + (args.version ? ' ' + args.version : '') +
+  var browserName = (args.browser || args.device) + (args.browser_version ? ' ' + args.browser_version : '') +
                     ' (' + args.os + ' ' + args.os_version +  ')' + ' on BrowserStack';
 
   this.id = id;
