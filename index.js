@@ -129,16 +129,42 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     this.url = url;
     tunnel.then(function() {
       client.createWorker(settings, function(error, worker) {
+
         if (error) {
           log.error('Can not start %s\n  %s', browserName, formatError(error));
           return emitter.emit('browser_process_failure', self);
         }
 
-        log.debug('Browser %s started with id %s', browserName, worker.id);
         workerId = worker.id;
 
-        if (captureTimeout) {
-          setTimeout(self._onTimeout, captureTimeout);
+        var whenRunning = function() {
+          log.debug('%s job started with id %s', browserName, workerId);
+
+          if (captureTimeout) {
+            setTimeout(self._onTimeout, captureTimeout);
+          }
+        };
+
+        var waitForWorkerRunning = function() {
+          client.getWorker(workerId, function(error, w) {
+            if (error) {
+              log.error('Can not get worker %s status %s\n  %s', workerId, browserName, formatError(error));
+              return emitter.emit('browser_process_failure', self);
+            }
+            if (w.status === 'running') {
+              whenRunning();
+            } else {
+              log.debug('%s job with id %s still in queue.', browserName, workerId);
+              setTimeout(waitForWorkerRunning, 1000);
+            }
+          });
+        };
+
+        if (worker.status === 'running') {
+          whenRunning();
+        } else {
+          log.debug('%s job queued with id %s.', browserName, workerId);
+          setTimeout(waitForWorkerRunning, 1000);
         }
 
       });
