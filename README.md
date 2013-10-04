@@ -59,7 +59,12 @@ module.exports = function(config) {
 - `username` your BS username (email), you can also use `BROWSER_STACK_USERNAME` env variable.
 - `accessKey` your BS access key (password), you can also use `BROWSER_STACK_ACCESS_KEY` env variable.
 - `startTunnel` do you wanna establish the BrowserStack tunnel ? (defaults to `true`)
-
+- `retryLimit` how many times do you want to retry to capture the browser ? (defaults to `3`)
+- `captureTimeout` the browser capture timeout (defaults to `120`)
+- `timeout` the BS worker timeout (defaults to `300`
+- `build` the BS worker build name (optional)
+- `name` the BS worker name (optional)
+- `project` the BS worker project name (optional)
 
 ### Per browser options
 - `device` name of the device

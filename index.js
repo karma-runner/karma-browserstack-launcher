@@ -58,7 +58,7 @@ var createBrowserStackClient = function(/* config.browserStack */ config) {
 var formatError = function(error) {
   if (error.message === 'Validation Failed') {
     return '  Validation Failed: you probably misconfigured the browser ' +
-           'or given browser is not available.';
+      'or given browser is not available.';
   }
 
   return error.toString();
@@ -66,19 +66,36 @@ var formatError = function(error) {
 
 
 var BrowserStackBrowser = function(id, emitter, args, logger,
-    /* browserStackTunnel */ tunnel, /* browserStackClient */ client) {
+                                   /* config */ config,
+                                   /* browserStackTunnel */ tunnel, /* browserStackClient */ client) {
 
   var self = this;
   var workerId = null;
   var captured = false;
   var log = logger.create('launcher.browserstack');
   var browserName = (args.browser || args.device) + (args.browser_version ? ' ' + args.browser_version : '') +
-                    ' (' + args.os + ' ' + args.os_version +  ')' + ' on BrowserStack';
+    ' (' + args.os + ' ' + args.os_version +  ')' + ' on BrowserStack';
 
   this.id = id;
   this.name = browserName;
 
+  var bsConfig = config.browserStack;
+
+  var captureTimeout = 0;
+
+  if (config.captureTimeout) {
+    captureTimeout = config.captureTimeout;
+  }
+
+  var retryLimit = 3;
+  if (bsConfig) {
+    if (bsConfig.retryLimit) {
+      retryLimit = bsConfig.retryLimit;
+    }
+  }
+
   this.start = function(url) {
+
     // TODO(vojta): handle non os/browser/version
     var settings = {
       os: args.os,
@@ -90,6 +107,26 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       url: url + '?id=' + id
     };
 
+    if (bsConfig) {
+      settings['browserstack.tunnel'] = true;
+      if (bsConfig.startTunnel === false) {
+        settings['browserstack.tunnel'] = false;
+      }
+      if (bsConfig.timeout) {
+        settings.timeout = bsConfig.timeout;
+      }
+      if (bsConfig.name) {
+        settings.name = bsConfig.name;
+      }
+      if (bsConfig.build) {
+        settings.build = bsConfig.build;
+      }
+      if (bsConfig.project) {
+        settings.project = bsConfig.project;
+      }
+    }
+
+    this.url = url;
     tunnel.then(function() {
       client.createWorker(settings, function(error, worker) {
         if (error) {
@@ -99,9 +136,14 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
 
         log.debug('Browser %s started with id %s', browserName, worker.id);
         workerId = worker.id;
+
+        if (captureTimeout) {
+          setTimeout(self._onTimeout, captureTimeout);
+        }
+
       });
     }, function() {
-        emitter.emit('browser_process_failure', self);
+      emitter.emit('browser_process_failure', self);
     });
   };
 
@@ -125,6 +167,19 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
 
   this.toString = function() {
     return this.name;
+  };
+
+  this._onTimeout = function() {
+    if (captured) {
+      return;
+    }
+    captured = false;
+    log.warn('%s have not captured in %d ms, killing.', browserName, captureTimeout);
+    self.kill(function() {
+      if(retryLimit--) {
+        self.start(self.url);
+      }
+    });
   };
 };
 
