@@ -19,7 +19,7 @@
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
     "browserstack": "~1.0",
-    "browserstacktunnel-wrapper": "~1.0.1",
+    "browserstacktunnel-wrapper": "~1.1.1",
     "q": "~0.9.6"
   },
   "peerDependencies": {
