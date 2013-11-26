@@ -33,6 +33,7 @@
     "grunt-auto-release": "~0.0.2"
   },
   "contributors": [
-    "L42y <423300@gmail.com>"
+    "L42y <423300@gmail.com>",
+    "Nicolas Ferrero <ferrero.nicolas@gmail.com>"
   ]
 }
