@@ -72,6 +72,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   var self = this;
   var workerId = null;
   var captured = false;
+  var alreadyKilling = null;
   var log = logger.create('launcher.browserstack');
   var browserName = (args.browser || args.device) + (args.browser_version ? ' ' + args.browser_version : '') +
     ' (' + args.os + ' ' + args.os_version +  ')' + ' on BrowserStack';
@@ -174,12 +175,23 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   };
 
   this.kill = function(done) {
-    if (!workerId) {
-      done();
+    if (!alreadyKilling) {
+      alreadyKilling = q.defer();
+
+      if (workerId) {
+        log.debug('Killing worker %s', workerId);
+        client.terminateWorker(workerId, function() {
+          workerId = null;
+          alreadyKilling.resolve();
+        });
+      } else {
+        alreadyKilling.resolve();
+      }
     }
 
-    log.debug('Killing worker %s', workerId);
-    client.terminateWorker(workerId, done);
+    if (done) {
+      alreadyKilling.promise.then(done);
+    }
   };
 
 
@@ -204,6 +216,9 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     self.kill(function() {
       if(retryLimit--) {
         self.start(self.url);
+        killingDeferred = null;
+      } else {
+        emitter.emit('browser_process_failure', self);
       }
     });
   };
