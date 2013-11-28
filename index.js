@@ -105,14 +105,11 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       browser: args.browser,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
-      url: url + '?id=' + id + '&return_url=about:blank'
+      url: url + '?id=' + id + '&return_url=about:blank',
+      'browserstack.tunnel': true
     };
 
     if (bsConfig) {
-      settings['browserstack.tunnel'] = true;
-      if (bsConfig.startTunnel === false) {
-        settings['browserstack.tunnel'] = false;
-      }
       if (bsConfig.timeout) {
         settings.timeout = bsConfig.timeout;
       }
