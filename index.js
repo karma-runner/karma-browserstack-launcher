@@ -80,20 +80,9 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   this.id = id;
   this.name = browserName;
 
-  var bsConfig = config.browserStack;
-
-  var captureTimeout = 0;
-
-  if (config.captureTimeout) {
-    captureTimeout = config.captureTimeout;
-  }
-
-  var retryLimit = 3;
-  if (bsConfig) {
-    if (bsConfig.retryLimit) {
-      retryLimit = bsConfig.retryLimit;
-    }
-  }
+  var bsConfig = config.browserStack || {};
+  var captureTimeout = config.captureTimeout || 0;
+  var retryLimit = bsConfig.retryLimit || 3;
 
   this.start = function(url) {
 
@@ -106,23 +95,13 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
       url: url + '?id=' + id + '&return_url=about:blank',
-      'browserstack.tunnel': true
+      'browserstack.tunnel': true,
+      timeout: bsConfig.timeout,
+      project: bsConfig.project,
+      name: bsConfig.name || 'Karma test',
+      build: bsConfig.build || process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER ||
+             process.env.BUILD_TAG || process.env.CIRCLE_BUILD_NUM || null
     };
-
-    if (bsConfig) {
-      if (bsConfig.timeout) {
-        settings.timeout = bsConfig.timeout;
-      }
-      if (bsConfig.name) {
-        settings.name = bsConfig.name;
-      }
-      if (bsConfig.build) {
-        settings.build = bsConfig.build;
-      }
-      if (bsConfig.project) {
-        settings.project = bsConfig.project;
-      }
-    }
 
     this.url = url;
     tunnel.then(function() {
