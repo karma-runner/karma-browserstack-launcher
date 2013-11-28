@@ -211,10 +211,10 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     if (captured) {
       return;
     }
-    captured = false;
-    log.warn('%s have not captured in %d ms, killing.', browserName, captureTimeout);
+
+    log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout);
     self.kill(function() {
-      if(retryLimit--) {
+      if (retryLimit--) {
         self.start(self.url);
         killingDeferred = null;
       } else {
