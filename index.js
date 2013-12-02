@@ -106,6 +106,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     this.url = url;
     tunnel.then(function() {
       client.createWorker(settings, function(error, worker) {
+        var sessionUrlShowed = false;
 
         if (error) {
           log.error('Can not start %s\n  %s', browserName, formatError(error));
@@ -128,6 +129,14 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
               log.error('Can not get worker %s status %s\n  %s', workerId, browserName, formatError(error));
               return emitter.emit('browser_process_failure', self);
             }
+
+            // TODO(vojta): show immediately in createClient callback once this gets fixed:
+            // https://github.com/browserstack/api/issues/10
+            if (!sessionUrlShowed) {
+              log.info('%s session at %s', browserName, w.browser_url);
+              sessionUrlShowed = true;
+            }
+
             if (w.status === 'running') {
               whenRunning();
             } else {
