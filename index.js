@@ -96,7 +96,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       browser_version: args.browser_version || args.version || 'latest',
       url: url + '?id=' + id + '&return_url=about:blank',
       'browserstack.tunnel': true,
-      timeout: bsConfig.timeout,
+      timeout: bsConfig.timeout || 300,
       project: bsConfig.project,
       name: bsConfig.name || 'Karma test',
       build: bsConfig.build || process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER ||
