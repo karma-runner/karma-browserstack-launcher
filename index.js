@@ -137,6 +137,8 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
           });
         };
 
+        log.info('%s session at %s', browserName, worker.browser_url);
+
         if (worker.status === 'running') {
           whenRunning();
         } else {
