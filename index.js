@@ -124,6 +124,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
 
         var waitForWorkerRunning = function() {
           client.getWorker(workerId, function(error, w) {
+            log.info('%s session at %s', browserName, w.browser_url);
             if (error) {
               log.error('Can not get worker %s status %s\n  %s', workerId, browserName, formatError(error));
               return emitter.emit('browser_process_failure', self);
