@@ -75,10 +75,10 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   var alreadyKilling = null;
   var log = logger.create('launcher.browserstack');
   var browserName = (args.browser || args.device) + (args.browser_version ? ' ' + args.browser_version : '') +
-    ' (' + args.os + ' ' + args.os_version +  ')' + ' on BrowserStack';
+    ' (' + args.os + ' ' + args.os_version +  ')';
 
   this.id = id;
-  this.name = browserName;
+  this.name = browserName + ' on BrowserStack';
 
   var bsConfig = config.browserStack || {};
   var captureTimeout = config.captureTimeout || 0;
@@ -164,8 +164,9 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       alreadyKilling = q.defer();
 
       if (workerId) {
-        log.debug('Killing worker %s', workerId);
+        log.debug('Killing %s (worker %s).', browserName, workerId);
         client.terminateWorker(workerId, function() {
+          log.debug('%s (worker %s) successfully killed.', browserName, workerId);
           workerId = null;
           alreadyKilling.resolve();
         });
