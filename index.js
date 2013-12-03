@@ -82,6 +82,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
 
   var bsConfig = config.browserStack || {};
   var captureTimeout = config.captureTimeout || 0;
+  var captureTimeoutId;
   var retryLimit = bsConfig.retryLimit || 3;
 
   this.start = function(url) {
@@ -119,7 +120,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
           log.debug('%s job started with id %s', browserName, workerId);
 
           if (captureTimeout) {
-            setTimeout(self._onTimeout, captureTimeout);
+            captureTimeoutId = setTimeout(self._onTimeout, captureTimeout);
           }
         };
 
@@ -168,6 +169,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
         client.terminateWorker(workerId, function() {
           log.debug('%s (worker %s) successfully killed.', browserName, workerId);
           workerId = null;
+          captured = false;
           alreadyKilling.resolve();
         });
       } else {
@@ -183,6 +185,11 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
 
   this.markCaptured = function() {
     captured = true;
+
+    if (captureTimeoutId) {
+      clearTimeout(captureTimeoutId);
+      captureTimeoutId = null;
+    }
   };
 
   this.isCaptured = function() {
