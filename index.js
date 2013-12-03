@@ -115,6 +115,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
         }
 
         workerId = worker.id;
+        alreadyKilling = null;
 
         var whenRunning = function() {
           log.debug('%s job started with id %s', browserName, workerId);
