@@ -11,11 +11,16 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
     return q();
   }
 
+  if (!bsConfig.tunnelIdentifier) {
+    bsConfig.tunnelIdentifier = 'karma' + Math.random();
+  }
+
   log.debug('Establishing the tunnel on %s:%s', config.hostname, config.port);
 
   var deferred = q.defer();
   var tunnel = new BrowserStackTunnel({
     key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
+    tunnelIdentifier: bsConfig.tunnelIdentifier,
     hosts: [{
       name: config.hostname,
       port: config.port,
@@ -93,6 +98,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       os_version: args.os_version,
       device: args.device,
       browser: args.browser,
+      tunnelIdentifier: bsConfig.tunnelIdentifier,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
       url: url + '?id=' + id + '&return_url=about:blank',
