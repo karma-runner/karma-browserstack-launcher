@@ -21,6 +21,7 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
   var tunnel = new BrowserStackTunnel({
     key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
     tunnelIdentifier: bsConfig.tunnelIdentifier,
+    jarFile: process.env.BROWSER_STACK_TUNNEL_JAR || bsConfig.jarFile,
     hosts: [{
       name: config.hostname,
       port: config.port,
