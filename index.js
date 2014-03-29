@@ -30,7 +30,7 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
 
   tunnel.start(function(error) {
     if (error) {
-      log.error('Can not establish the tunnel.');
+      log.error('Can not establish the tunnel.\n%s', error.toString());
       deferred.reject(error);
     } else {
       log.debug('Tunnel established.')
