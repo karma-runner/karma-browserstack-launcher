@@ -101,6 +101,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       tunnelIdentifier: bsConfig.tunnelIdentifier,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
+      // TODO(vojta): do not use return_url (it only works with single run)
       url: url + '?id=' + id + '&return_url=about:blank',
       'browserstack.tunnel': true,
       timeout: bsConfig.timeout || 300,
