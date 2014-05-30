@@ -73,8 +73,10 @@ module.exports = function(config) {
 - `os` which platform ?
 - `os_version` version of the platform
 
+[BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers) 
+explains how to retrieve a list of desired capabilities for browsers.
 
-For an example project of, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
+For an example project, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
 
 
 ----
