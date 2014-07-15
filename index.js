@@ -120,7 +120,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     var launchUrl = launcherConfig.url;
 
     //Concatenate the launch arguments with the Url that runs the specs
-    var getQueryString = require("../../build_env/common/getQueryString");
+    var getQueryString = require("../../../build_env/common/getQueryString");
     var query = getQueryString(launchArgs);
     if(query){
         launchUrl += "?" + query;
