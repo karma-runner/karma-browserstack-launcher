@@ -2,7 +2,6 @@ var q = require('q');
 var api = require('browserstack');
 var BrowserStackTunnel = require('browserstacktunnel-wrapper');
 var urlFlag = false;
-var tunnelFlag = false;
 
 var createBrowserStackTunnel = function(logger, config, emitter) {
     var log = logger.create('launcher.browserstack');
@@ -121,7 +120,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     var launchUrl = launcherConfig.url;
 
     //Concatenate the launch arguments with the Url that runs the specs
-    var getQueryString = require("../../common/getQueryString");
+    var getQueryString = require("../../build_env/common/getQueryString");
     var query = getQueryString(launchArgs);
     if(query){
         launchUrl += "?" + query;
