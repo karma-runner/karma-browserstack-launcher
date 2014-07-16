@@ -1,3 +1,8 @@
+/* jshint strict:false */
+/* jshint camelcase:false */
+/* jshint node:true */
+/* jshint unused:false */
+
 var q = require('q');
 var api = require('browserstack');
 var BrowserStackTunnel = require('browserstacktunnel-wrapper');
@@ -52,8 +57,8 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
             log.error('Cannot establish the tunnel.\n%s', error.toString());
             deferred.reject(error);
         } else {
-            console.log("Tunnel established.");
-            log.debug('Tunnel established.')
+            console.log('Tunnel established.');
+            log.debug('Tunnel established.');
             deferred.resolve();
         }
     });
@@ -111,23 +116,23 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     var launchArgs = config.browserstackLauncher.launchArgs || [];
 
     if (urlFlag === false) {
-        launchArgs.unshift({ name: "port", value: config.port });
-        launchArgs.unshift({ name: "hostname", value: config.hostname });
-        launchArgs.unshift({ name: "id", value: id });
+        launchArgs.unshift({ name: 'port', value: config.port });
+        launchArgs.unshift({ name: 'hostname', value: config.hostname });
+        launchArgs.unshift({ name: 'id', value: id });
         urlFlag = true;
     }
 
     var launchUrl = launcherConfig.url;
 
     //Concatenate the launch arguments with the Url that runs the specs
-    var getQueryString = require("../../../build_env/common/getQueryString");
+    var getQueryString = require('../../common/getQueryString');
     var query = getQueryString(launchArgs);
     if(query){
-        launchUrl += "?" + query;
+        launchUrl += '?' + query;
     }
 
     this.start = function(url) {
-        console.log("Open Url "+ launchUrl);
+        console.log('Open Url '+ launchUrl);
 
         // TODO(vojta): handle non os/browser/version
         var settings = {
@@ -253,7 +258,6 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
         self.kill(function() {
             if (retryLimit--) {
                 self.start(launchUrl);
-                killingDeferred = null;
             } else {
                 emitter.emit('browser_process_failure', self);
             }
