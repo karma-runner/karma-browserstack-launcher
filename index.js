@@ -15,6 +15,7 @@
 /* jshint unused:false */
 
 var q = require('q');
+var urlModule = require('url');
 var api = require('browserstack');
 var BrowserStackTunnel = require('browserstacktunnel-wrapper');
 var urlFlag = false;
@@ -35,25 +36,23 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
 
     var deferred = q.defer();
 
-    var ports = [];
-
-    ports.push(config.port);
-
+    //EC2 instance hostname
+    var hostname = urlModule.parse(config.browserstackLauncher.launcherConfig.url).hostname;
     var hosts = [];
 
+    //Atlas is being served on port 80. Pushing EC2 instance host to hosts array 
     hosts.push({
-        name: 'localhost',
-        port: 3000,
+        name: hostname,
+        port: 80,
         sslFlag: 0
     });
 
-    for (var i=0; i < ports.length; i++) {
-        hosts.push({
-            name: config.hostname,
-            port: ports[i],
-            sslFlag: 0
-        });
-    }
+    //Karma port and hostname
+    hosts.push({
+        name: config.hostname,
+        port: config.port,
+        sslFlag: 0
+    });
 
     var tunnel = new BrowserStackTunnel({
         key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
@@ -142,7 +141,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
         launchUrl += '?' + query;
     }
 
-    this.start = function(url) {
+    this.start = function() {
         console.log('Open Url '+ launchUrl);
 
         // TODO(vojta): handle non os/browser/version
@@ -162,8 +161,6 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
             build: bsConfig.build || process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER ||
                 process.env.BUILD_TAG || process.env.CIRCLE_BUILD_NUM || null
         };
-
-        this.url = url;
 
         tunnel.then(function() {
             client.createWorker(settings, function(error, worker) {
