@@ -87,7 +87,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   this.name = browserName + ' on BrowserStack';
 
   var bsConfig = config.browserStack || {};
-  var captureTimeout = config.captureTimeout || 0;
+  var captureTimeout = bsConfig.captureTimeout || 0;
   var captureTimeoutId;
   var retryLimit = bsConfig.retryLimit || 3;
 
