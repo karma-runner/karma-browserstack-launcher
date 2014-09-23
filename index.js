@@ -1,10 +1,14 @@
 var q = require('q');
 var api = require('browserstack');
 var BrowserStackTunnel = require('browserstacktunnel-wrapper');
+var prettyMs = require('pretty-ms');
+var chalk = require('chalk');
 
 
 var createBrowserStackTunnel = function(logger, config, emitter) {
   var log = logger.create('launcher.browserstack');
+  var result = { browsers: [], time: { total: 0, net: 0 }};
+
   var bsConfig = config.browserStack || {};
 
   if (bsConfig.startTunnel === false) {
@@ -34,7 +38,7 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
       log.error('Can not establish the tunnel.\n%s', error.toString());
       deferred.reject(error);
     } else {
-      log.debug('Tunnel established.')
+      log.debug('Tunnel established.');
       deferred.resolve();
     }
   });
@@ -43,7 +47,16 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
     log.debug('Shutting down the tunnel.');
     tunnel.stop(function(error) {
       done();
+      if (bsConfig.extraLog) {
+        logFinalResults(result);
+      }
     });
+  });
+
+  emitter.on('browser_complete', function (data) {
+    result.browsers.push({ name: data.name, time: data.lastResult.totalTime });
+    result.time.net += data.lastResult.netTime;
+    result.time.total += data.lastResult.totalTime;
   });
 
   return deferred.promise;
@@ -68,6 +81,32 @@ var formatError = function(error) {
   }
 
   return error.toString();
+};
+
+var justifyString = function (str, max) {
+  return str + Array(max - str.length + 1).join(' ');
+};
+
+var logFinalResults = function (data) {
+  var longestName;
+  var longestTime;
+
+  data.browsers.forEach(function (e, i) {
+    if (e.name && (!longestName || e.name.length > longestName.length)) {
+      longestName = e.name;
+    }
+    data.browsers[i].avg = e.time / data.time.total;
+    data.browsers[i].time = prettyMs(e.time);
+    if (e.time && (!longestTime || e.time.length > longestTime.length)) {
+      longestTime = e.time;
+    }
+  });
+
+  data.browsers.forEach(function (e) {
+    console.info(justifyString(e.name, longestName.length) + ' | ' + chalk.blue(justifyString(e.time, longestTime.length)) + ' (' + chalk.blue((e.avg * 100).toFixed(2) + '%') + ')');
+  });
+
+  console.info(justifyString('Total time elapsed ', longestName.length) + ' | ' + chalk.blue(prettyMs(data.time.total)) + ' / ' + chalk.blue(prettyMs(data.time.net)));
 };
 
 
@@ -161,7 +200,6 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
           log.debug('%s job queued with id %s.', browserName, workerId);
           setTimeout(waitForWorkerRunning, 1000);
         }
-
       });
     }, function() {
       emitter.emit('browser_process_failure', self);
@@ -212,7 +250,6 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
     if (captured) {
       return;
     }
-
     log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout);
     self.kill(function() {
       if (retryLimit--) {
