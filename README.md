@@ -65,6 +65,7 @@ module.exports = function(config) {
 - `build` the BS worker build name (optional)
 - `name` the BS worker name (optional)
 - `project` the BS worker project name (optional)
+- `extraLog` log extra info after each browser is finished, like browser percentage or total execution time (optional)
 
 ### Per browser options
 - `device` name of the device

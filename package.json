@@ -20,6 +20,8 @@
   "dependencies": {
     "browserstack": "~1.0",
     "browserstacktunnel-wrapper": "~1.2.1",
+    "chalk": "^0.5.1",
+    "pretty-ms": "^1.0.0",
     "q": "~0.9.6"
   },
   "peerDependencies": {
