@@ -70,6 +70,22 @@ var formatError = function(error) {
   return error.toString();
 };
 
+var clone = function (obj) {
+  return extend({}, obj);
+};
+
+var extend = function (what, wit) {
+  var extObj;
+  var witKeys = Object.keys(wit);
+
+  extObj = Object.keys(what).length ? clone(what) : {};
+
+  witKeys.forEach(function (key) {
+    Object.defineProperty(extObj, key, Object.getOwnPropertyDescriptor(wit, key));
+  });
+
+  return extObj;
+};
 
 var BrowserStackBrowser = function(id, emitter, args, logger,
                                    /* config */ config,
@@ -92,13 +108,8 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   var retryLimit = bsConfig.retryLimit || 3;
 
   this.start = function(url) {
-
     // TODO(vojta): handle non os/browser/version
-    var settings = {
-      os: args.os,
-      os_version: args.os_version,
-      device: args.device,
-      browser: args.browser,
+    var settings = extend(args, {
       tunnelIdentifier: bsConfig.tunnelIdentifier,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
@@ -108,8 +119,8 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       project: bsConfig.project,
       name: bsConfig.name || 'Karma test',
       build: bsConfig.build || process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER ||
-             process.env.BUILD_TAG || process.env.CIRCLE_BUILD_NUM || null
-    };
+      process.env.BUILD_TAG || process.env.CIRCLE_BUILD_NUM || null
+    });
 
     this.url = url;
     tunnel.then(function() {
