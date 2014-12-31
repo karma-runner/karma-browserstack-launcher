@@ -73,6 +73,36 @@ module.exports = function(config) {
 - `os` which platform ?
 - `os_version` version of the platform
 
+### Browserstack iOS simulators
+BrowserStack provides real iOS devices for Selenium and JS testing. All your tests are by default executed on the real iOS devices. Thus, you would not find the list of iOS simulators in the documentation or the browsers.json file. The list below for the iOS simulators is complete and you should be able to test smoothly on these devices.  
+BrowserStack are actively working on improving the performance of real iOS devices and moving forward, they will be completely replacing the simulators with real devices. Meantime if you're facing issues with real devices (like no
+reaction within specified time intervals) you can use simulators.
+
+####List of iOS simulators
+- `device: 'iPad 3rd', 'os_version': '5.1'`
+- `device: 'iPad 3rd (6.0)', 'os_version': '6.0'`
+- `device: 'iPad Mini', 'os_version': '7.0'`
+- `device: 'iPad 4th', 'os_version': '7.0'`
+- `device: 'iPhone 4S', 'os_version': '5.1'`
+- `device: 'iPhone 4S (6.0)', 'os_version': '6.0'`
+- `device: 'iPhone 5', 'os_version': '6.0'`
+- `device: 'iPhone 5S', 'os_version': '7.0'`
+
+####Example
+```js
+customLaunchers: {
+  iPad_3: {
+    real_mobile: false,
+    device: 'iPad 3rd (6.0)',
+    os: 'ios',
+    'os_version': '6.0',
+    'browser_version': null,
+    browser: 'Mobile Safari'
+  }
+}
+```
+
+
 [BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers) 
 explains how to retrieve a list of desired capabilities for browsers.
 
