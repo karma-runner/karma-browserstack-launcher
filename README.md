@@ -27,6 +27,9 @@ npm install karma-browserstack-launcher --save-dev
 // karma.conf.js
 module.exports = function(config) {
   config.set({
+    plugins: [
+      'karma-browserstack-launcher'
+    ],
     // global config of your BrowserStack account
     browserStack: {
       username: 'jamesbond',
