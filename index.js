@@ -99,6 +99,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       os_version: args.os_version,
       device: args.device,
       browser: args.browser,
+      real_mobile : args.real_mobile || 'true', // requires strings instead of booleans
       tunnelIdentifier: bsConfig.tunnelIdentifier,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
