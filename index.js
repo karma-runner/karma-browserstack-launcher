@@ -90,6 +90,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
   var captureTimeout = config.captureTimeout || 0;
   var captureTimeoutId;
   var retryLimit = bsConfig.retryLimit || 3;
+  var pollingTimeout = bsConfig.pollingTimeout || 1000;
 
   this.start = function(url) {
 
@@ -151,7 +152,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
               whenRunning();
             } else {
               log.debug('%s job with id %s still in queue.', browserName, workerId);
-              setTimeout(waitForWorkerRunning, 1000);
+              setTimeout(waitForWorkerRunning, pollingTimeout);
             }
           });
         };
@@ -160,7 +161,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
           whenRunning();
         } else {
           log.debug('%s job queued with id %s.', browserName, workerId);
-          setTimeout(waitForWorkerRunning, 1000);
+          setTimeout(waitForWorkerRunning, pollingTimeout);
         }
 
       });
