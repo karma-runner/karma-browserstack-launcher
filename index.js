@@ -151,7 +151,7 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
               whenRunning();
             } else {
               log.debug('%s job with id %s still in queue.', browserName, workerId);
-              setTimeout(waitForWorkerRunning, 1000);
+              setTimeout(waitForWorkerRunning, 10000);
             }
           });
         };
