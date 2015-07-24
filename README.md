@@ -65,6 +65,10 @@ module.exports = function(config) {
 - `build` the BS worker build name (optional)
 - `name` the BS worker name (optional)
 - `project` the BS worker project name (optional)
+- `proxyHost` the host of your proxy as you would define it for BrowserstackLocal
+- `proxyPort` the port of your proxy as you would define it for BrowserstackLocal
+- `proxyUser` the username used for authentication with you proxy as you would define it for BrowserstackLocal
+- `proxyPass` the password used for authenticationwit your proxy as you would define it for BrowserstackLocal
 
 ### Per browser options
 - `device` name of the device
@@ -74,7 +78,7 @@ module.exports = function(config) {
 - `os` which platform ?
 - `os_version` version of the platform
 
-[BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers) 
+[BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers)
 explains how to retrieve a list of desired capabilities for browsers.
 
 For an example project, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
