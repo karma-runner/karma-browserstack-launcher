@@ -11,8 +11,13 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
     return q();
   }
 
-  if (!bsConfig.tunnelIdentifier) {
-    bsConfig.tunnelIdentifier = 'karma' + Math.random();
+  if (!bsConfig.localIdentifier) {
+    if (bsConfig.tunnelIdentifier) {
+      // Back compat; the option was renamed.
+      bsConfig.localIdentifier = bsConfig.tunnelIdentifier;
+      delete bsConfig.tunnelIdentifier;
+    }
+    bsConfig.localIdentifier = 'karma' + Math.random();
   }
 
   log.debug('Establishing the tunnel on %s:%s', config.hostname, config.port);
@@ -20,7 +25,7 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
   var deferred = q.defer();
   var tunnel = new BrowserStackTunnel({
     key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
-    tunnelIdentifier: bsConfig.tunnelIdentifier,
+    localIdentifier: bsConfig.localIdentifier,
     jarFile: process.env.BROWSER_STACK_TUNNEL_JAR || bsConfig.jarFile,
     hosts: [{
       name: config.hostname,
