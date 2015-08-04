@@ -100,7 +100,6 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       os_version: args.os_version,
       device: args.device,
       browser: args.browser,
-      real_mobile : args.real_mobile || 'true', // requires strings instead of booleans
       tunnelIdentifier: bsConfig.tunnelIdentifier,
       // TODO(vojta): remove "version" (only for B-C)
       browser_version: args.browser_version || args.version || 'latest',
@@ -112,6 +111,10 @@ var BrowserStackBrowser = function(id, emitter, args, logger,
       build: bsConfig.build || process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER ||
              process.env.BUILD_TAG || process.env.CIRCLE_BUILD_NUM || null
     };
+
+    if (typeof args.real_mobile !== 'undefined') {
+        settings.real_mobile = args.real_mobile;
+    }
 
     this.url = url;
     tunnel.then(function() {
