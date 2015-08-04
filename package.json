@@ -27,10 +27,15 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^1.0.0",
+    "eslint-config-standard": "^4.0.0",
+    "eslint-plugin-standard": "^1.2.0",
     "grunt": "~0.4.1",
+    "grunt-auto-release": "~0.0.2",
     "grunt-bump": "~0.0.7",
+    "grunt-eslint": "^17.0.0",
     "grunt-npm": "~0.0.2",
-    "grunt-auto-release": "~0.0.2"
+    "load-grunt-tasks": "^3.2.0"
   },
   "contributors": [
     "L42y <423300@gmail.com>",
