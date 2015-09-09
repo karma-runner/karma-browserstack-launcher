@@ -5,25 +5,18 @@
 
 [![Build Status](https://img.shields.io/travis/karma-runner/karma-browserstack-launcher/master.svg?style=flat-square)](https://travis-ci.org/karma-runner/karma-browserstack-launcher) [![Dependency Status](https://img.shields.io/david/karma-runner/karma-browserstack-launcher.svg?style=flat-square)](https://david-dm.org/karma-runner/karma-browserstack-launcher) [![devDependency Status](https://img.shields.io/david/dev/karma-runner/karma-browserstack-launcher.svg?style=flat-square)](https://david-dm.org/karma-runner/karma-browserstack-launcher#info=devDependencies)
 
-> Use any browser on [BrowserStack](http://www.browserstack.com/)!
+> Use any browser on [BrowserStack](https://www.browserstack.com/)!
 
 
 ## Installation
 
-The easiest way is to keep `karma-browserstack-launcher` as a devDependency in your `package.json`.
-```json
-{
-  "devDependencies": {
-    "karma": "~0.10",
-    "karma-browserstack-launcher": "~0.1"
-  }
-}
+The easiest way is to keep `karma-browserstack-launcher` as a devDependency in your `package.json`. Just run,
+
+```bash
+$ npm install karma-browserstack-launcher --save-dev
 ```
 
-You can also add it by this command:
-```bash
-npm install karma-browserstack-launcher --save-dev
-```
+and it will be added automatically.
 
 
 ## Configuration
@@ -56,11 +49,12 @@ module.exports = function(config) {
     },
 
     browsers: ['bs_firefox_mac', 'bs_iphone5']
-  });
-};
+  })
+}
 ```
 
 ### Global options
+
 - `username` your BS username (email), you can also use `BROWSER_STACK_USERNAME` env variable.
 - `accessKey` your BS access key (password), you can also use `BROWSER_STACK_ACCESS_KEY` env variable.
 - `startTunnel` do you wanna establish the BrowserStack tunnel ? (defaults to `true`)
@@ -72,6 +66,7 @@ module.exports = function(config) {
 - `project` the BS worker project name (optional)
 
 ### Per browser options
+
 - `device` name of the device
 - `real_mobile ` allow browserstack to use a simulator
 - `browser` name of the browser
@@ -79,10 +74,8 @@ module.exports = function(config) {
 - `os` which platform ?
 - `os_version` version of the platform
 
-[BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers)
+[BrowserStack's REST API documentation](https://www.browserstack.com/automate/rest-api#rest-api-browsers)
 explains how to retrieve a list of desired capabilities for browsers.
-
-For an example project, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
 
 
 ----
