@@ -6,6 +6,30 @@ module.exports = function (grunt) {
         commitMessage: 'chore: update contributors'
       }
     },
+    conventionalChangelog: {
+      release: {
+        options: {
+          changelogOpts: {
+            preset: 'angular'
+          }
+        },
+        src: 'CHANGELOG.md'
+      }
+    },
+    conventionalGithubReleaser: {
+      release: {
+        options: {
+          auth: {
+            type: 'oauth',
+            token: process.env.GH_TOKEN
+          },
+          changelogOpts: {
+            preset: 'angular',
+            releaseCount: 0
+          }
+        }
+      }
+    },
     bump: {
       options: {
         commitMessage: 'chore: release v%VERSION%',
@@ -28,6 +52,9 @@ module.exports = function (grunt) {
     grunt.task.run([
       'npm-contributors',
       'bump:' + (type || 'patch'),
+      'conventionalChangelog',
+      'bump-commit',
+      'conventionalGithubReleaser',
       'npm-publish'
     ])
   })
