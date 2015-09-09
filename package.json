@@ -3,9 +3,6 @@
   "version": "0.1.5",
   "description": "A Karma plugin. Launch any browser on BrowserStack!",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/karma-runner/karma-browserstack-launcher.git"
