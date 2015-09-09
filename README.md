@@ -1,5 +1,10 @@
 # karma-browserstack-launcher
 
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/karma-runner/karma-browserstack-launcher)
+ [![npm version](https://img.shields.io/npm/v/karma-browserstack-launcher.svg?style=flat-square)](https://www.npmjs.com/package/karma-browserstack-launcher) [![npm downloads](https://img.shields.io/npm/dm/karma-browserstack-launcher.svg?style=flat-square)](https://www.npmjs.com/package/karma-browserstack-launcher)
+
+[![Build Status](https://img.shields.io/travis/karma-runner/karma-browserstack-launcher/master.svg?style=flat-square)](https://travis-ci.org/karma-runner/karma-browserstack-launcher) [![Dependency Status](https://img.shields.io/david/karma-runner/karma-browserstack-launcher.svg?style=flat-square)](https://david-dm.org/karma-runner/karma-browserstack-launcher) [![devDependency Status](https://img.shields.io/david/dev/karma-runner/karma-browserstack-launcher.svg?style=flat-square)](https://david-dm.org/karma-runner/karma-browserstack-launcher#info=devDependencies)
+
 > Use any browser on [BrowserStack](http://www.browserstack.com/)!
 
 
@@ -74,7 +79,7 @@ module.exports = function(config) {
 - `os` which platform ?
 - `os_version` version of the platform
 
-[BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers) 
+[BrowserStack's REST API documentation](http://www.browserstack.com/automate/rest-api#rest-api-browsers)
 explains how to retrieve a list of desired capabilities for browsers.
 
 For an example project, check out Karma's [e2e test](https://github.com/karma-runner/karma/tree/master/test/e2e/browserstack).
