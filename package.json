@@ -40,10 +40,17 @@
     "load-grunt-tasks": "^3.2.0"
   },
   "contributors": [
+    "Donato Borrello <donato@jwplayer.com>",
+    "dignifiedquire <dignifiedquire@gmail.com>",
+    "DonatoB <donato@jwplayer.com>",
     "L42y <423300@gmail.com>",
     "Nicolas Ferrero <ferrero.nicolas@gmail.com>",
-    "Atsushi Nagase <a@ngs.io>",
+    "Neal Stewart <nes@tradeshift.com>",
+    "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
+    "Bobby Earl <bobby.earl@blackbaud.com>",
     "Carl-Erik Kopseng <carlerik@gmail.com>",
-    "Dan Brooks <danger.dan_@hotmail.co.uk>"
+    "Dan Brooks <danger.dan_@hotmail.co.uk>",
+    "Atsushi Nagase <a@ngs.io>",
+    "Michał Gołębiowski <m.goleb@gmail.com>"
   ]
 }
