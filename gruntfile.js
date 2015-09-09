@@ -24,8 +24,7 @@ module.exports = function (grunt) {
             token: process.env.GH_TOKEN
           },
           changelogOpts: {
-            preset: 'angular',
-            releaseCount: 0
+            preset: 'angular'
           }
         }
       }
@@ -33,7 +32,11 @@ module.exports = function (grunt) {
     bump: {
       options: {
         commitMessage: 'chore: release v%VERSION%',
-        pushTo: 'upstream'
+        pushTo: 'upstream',
+        commitFiles: [
+          'package.json',
+          'CHANGELOG.md'
+        ]
       }
     },
     eslint: {

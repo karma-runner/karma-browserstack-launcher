@@ -1,11 +1,14 @@
-<a name="0.1.3"></a>
-## [0.1.3](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.4...v0.1.3) (2015-09-09)
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.4...v0.1.5) (2015-09-09)
 
 
 ### Bug Fixes
 
 * Update browserstacktunnel-wrapper & others ([23fdc9d](https://github.com/karma-runner/karma-browserstack-launcher/commit/23fdc9d))
 
+
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.3...v0.1.4)
 
 
 <a name="0.1.3"></a>
@@ -134,6 +137,3 @@
 
 * establish the ssh tunnel automatically ([75cf642](https://github.com/karma-runner/karma-browserstack-launcher/commit/75cf642))
 * initial version ([20f10ec](https://github.com/karma-runner/karma-browserstack-launcher/commit/20f10ec))
-
-
-
