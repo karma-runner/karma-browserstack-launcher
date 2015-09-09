@@ -41,6 +41,10 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   emitter.on('exit', function (done) {
     log.debug('Shutting down the tunnel.')
     tunnel.stop(function (error) {
+      if (error) {
+        log.error(error)
+      }
+
       done()
     })
   })
@@ -160,7 +164,6 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
           log.debug('%s job queued with id %s.', browserName, workerId)
           setTimeout(waitForWorkerRunning, pollingTimeout)
         }
-
       })
     }, function () {
       emitter.emit('browser_process_failure', self)
