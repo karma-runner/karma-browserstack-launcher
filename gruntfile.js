@@ -42,6 +42,8 @@ module.exports = function (grunt) {
     eslint: {
       target: [
         'index.js',
+        'worker.js',
+        'worker-manager.js',
         'gruntfile.js'
       ]
     }
