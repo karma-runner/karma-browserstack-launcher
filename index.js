@@ -38,8 +38,10 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
       log.error('Can not establish the tunnel.\n%s', error.toString())
       deferred.reject(error)
     } else {
-      log.debug('Tunnel established.')
-      deferred.resolve()
+      setTimeout(function () {
+        log.debug('Tunnel established.')
+        deferred.resolve()
+      }, 2000) // Give the tunnel time to become actually established
     }
   })
 
