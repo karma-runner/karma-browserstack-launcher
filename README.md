@@ -64,6 +64,7 @@ module.exports = function(config) {
 - `build` the BS worker build name (optional)
 - `name` the BS worker name (optional)
 - `project` the BS worker project name (optional)
+- `binaryBasePath` the BS binary base bath, you can also use `BROWSER_STACK_BINARY_BASE_PATH` env variable. This will override the default and set the base path to the BS local binary (optional)
 
 ### Per browser options
 
