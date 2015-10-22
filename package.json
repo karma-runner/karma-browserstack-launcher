@@ -37,17 +37,20 @@
     "load-grunt-tasks": "^3.2.0"
   },
   "contributors": [
-    "Donato Borrello <donato@jwplayer.com>",
     "dignifiedquire <dignifiedquire@gmail.com>",
+    "Donato Borrello <donato@jwplayer.com>",
     "DonatoB <donato@jwplayer.com>",
-    "L42y <423300@gmail.com>",
-    "Nicolas Ferrero <ferrero.nicolas@gmail.com>",
-    "Neal Stewart <nes@tradeshift.com>",
     "Friedel Ziegelmayer <dignifiedquire@gmail.com>",
-    "Bobby Earl <bobby.earl@blackbaud.com>",
+    "L42y <423300@gmail.com>",
+    "Michał Gołębiowski <m.goleb@gmail.com>",
+    "Nicolas Ferrero <ferrero.nicolas@gmail.com>",
     "Carl-Erik Kopseng <carlerik@gmail.com>",
-    "Dan Brooks <danger.dan_@hotmail.co.uk>",
+    "Mark Trostler <mark@zzo.com>",
+    "Bobby Earl <bobby.earl@blackbaud.com>",
+    "Neal Stewart <nes@tradeshift.com>",
     "Atsushi Nagase <a@ngs.io>",
-    "Michał Gołębiowski <m.goleb@gmail.com>"
+    "Nidhi Makhijani <nidhimj22@gmail.com>",
+    "Dan Brooks <danger.dan_@hotmail.co.uk>",
+    "Anthony Trimble <red2678@gmail.com>"
   ]
 }
