@@ -1,10 +1,22 @@
 var q = require('q')
 var api = require('browserstack')
 var BrowserStackTunnel = require('browserstacktunnel-wrapper')
+var os = require('os')
 
 var createBrowserStackTunnel = function (logger, config, emitter) {
   var log = logger.create('launcher.browserstack')
   var bsConfig = config.browserStack || {}
+  var bsBinaryBasePath = process.env.BROWSER_STACK_BINARY_BASE_PATH || bsConfig.binaryBasePath || null
+  var bsRunConfig = {
+    key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
+    tunnelIdentifier: bsConfig.tunnelIdentifier,
+    jarFile: process.env.BROWSER_STACK_TUNNEL_JAR || bsConfig.jarFile,
+    hosts: [{
+      name: config.hostname,
+      port: config.port,
+      sslFlag: 0
+    }]
+  }
 
   if (bsConfig.startTunnel === false) {
     return q()
@@ -19,19 +31,31 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
     bsConfig.localIdentifier = 'karma' + Math.random()
   }
 
+  if (bsBinaryBasePath) {
+    switch (os.platform()) {
+      case 'linux':
+        switch (os.arch()) {
+          case 'x64':
+            bsRunConfig.linux64Bin = bsBinaryBasePath
+            break
+          case 'ia32':
+            bsRunConfig.linux32Bin = bsBinaryBasePath
+            break
+        }
+        break
+      case 'darwin':
+        bsRunConfig.osxBin = bsBinaryBasePath
+        break
+      default:
+        bsRunConfig.win32Bin = bsBinaryBasePath
+        break
+    }
+  }
+
   log.debug('Establishing the tunnel on %s:%s', config.hostname, config.port)
 
   var deferred = q.defer()
-  var tunnel = new BrowserStackTunnel({
-    key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
-    localIdentifier: bsConfig.localIdentifier,
-    jarFile: process.env.BROWSER_STACK_TUNNEL_JAR || bsConfig.jarFile,
-    hosts: [{
-      name: config.hostname,
-      port: config.port,
-      sslFlag: 0
-    }]
-  })
+  var tunnel = new BrowserStackTunnel(bsRunConfig)
 
   tunnel.start(function (error) {
     if (error) {
