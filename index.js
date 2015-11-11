@@ -119,8 +119,11 @@ var formatError = function (error) {
 
 var BrowserStackBrowser = function (id, emitter, args, logger,
   /* config */ config,
-  /* browserStackTunnel */ tunnel, /* browserStackClient */ client) {
+  /* browserStackTunnel */ tunnel, /* browserStackClient */ client,
+  baseLauncherDecorator) {
   var self = this
+
+  baseLauncherDecorator(self)
 
   var workerId = null
   var captured = false
@@ -226,6 +229,14 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
     if (done) {
       alreadyKilling.promise.then(done)
     }
+  }
+
+  this.forceKill = function () {
+    var self = this
+
+    return q.promise(function (resolve) {
+      self.kill(resolve)
+    })
   }
 
   this.markCaptured = function () {
