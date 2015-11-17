@@ -82,6 +82,8 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
 var createBrowserStackClient = function (/* config.browserStack */config) {
   var env = process.env
 
+  config = config || {}
+
   // TODO(vojta): handle no username/pwd
   var client = api.createClient({
     username: env.BROWSER_STACK_USERNAME || config.username,
