@@ -10,7 +10,7 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   var bsBinaryBasePath = process.env.BROWSER_STACK_BINARY_BASE_PATH || bsConfig.binaryBasePath || null
   var bsRunConfig = {
     key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
-    localIdentifier: bsConfig.localIdentifier || bsConfig.tunnelIdentifier || 'karma' + Math.random(),
+    localIdentifier: bsConfig.localIdentifier || bsConfig.tunnelIdentifier,
     jarFile: process.env.BROWSER_STACK_TUNNEL_JAR || bsConfig.jarFile,
     hosts: [{
       name: config.hostname,
@@ -19,11 +19,13 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
     }]
   }
 
-  bsConfig.tunnelIdentifier = bsRunConfig.localIdentifier
-
   if (bsConfig.startTunnel === false) {
+    bsConfig.tunnelIdentifier = bsRunConfig.localIdentifier
     return q()
   }
+
+  bsRunConfig.localIdentifier = bsRunConfig.localIdentifier || 'karma' + Math.random()
+  bsConfig.tunnelIdentifier = bsRunConfig.localIdentifier
 
   if (bsBinaryBasePath) {
     switch (os.platform()) {
