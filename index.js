@@ -16,7 +16,11 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
       name: config.hostname,
       port: config.port,
       sslFlag: 0
-    }]
+    }],
+    proxyHost: bsConfig.proxyHost || null,
+    proxyPort: bsConfig.proxyPort || null,
+    proxyUser: bsConfig.proxyUser || null,
+    proxyPass: bsConfig.proxyPass || null
   }
 
   if (bsConfig.startTunnel === false) {
