@@ -1,3 +1,18 @@
+<a name="0.1.8"></a>
+## [0.1.8](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.7...v0.1.8) (2015-12-16)
+
+
+### Bug Fixes
+
+* Avoid setting tunnelIdentifier if startTunnel is false ([fe61baa](https://github.com/karma-runner/karma-browserstack-launcher/commit/fe61baa))
+* Property access on undefined config ([a05e6cf](https://github.com/karma-runner/karma-browserstack-launcher/commit/a05e6cf)), closes [#52](https://github.com/karma-runner/karma-browserstack-launcher/issues/52)
+
+### Features
+
+* **proxy:** Add proxy settings to BrowserstackLocal ([7c3da2b](https://github.com/karma-runner/karma-browserstack-launcher/commit/7c3da2b))
+
+
+
 <a name="0.1.6"></a>
 ## [0.1.6](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.6...v0.1.6) (2015-10-22)
 
