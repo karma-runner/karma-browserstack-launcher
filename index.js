@@ -190,7 +190,7 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
             case 'running':
               log.debug('%s job started with id %s', browserName, workerId)
 
-              if (captureTimeout) {
+              if (captureTimeout && !captured) {
                 captureTimeoutId = setTimeout(self._onTimeout, captureTimeout)
               }
               break
@@ -218,6 +218,12 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
         log.debug('Killing %s (worker %s).', browserName, workerId)
         client.terminateWorker(workerId, function () {
           log.debug('%s (worker %s) successfully killed.', browserName, workerId)
+
+          if (captureTimeoutId) {
+            clearTimeout(captureTimeoutId)
+            captureTimeoutId = null
+          }
+
           workerId = null
           captured = false
           alreadyKilling.resolve()
