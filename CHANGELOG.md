@@ -1,3 +1,13 @@
+<a name="0.1.9"></a>
+## [0.1.9](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.8...v0.1.9) (2016-01-10)
+
+
+### Bug Fixes
+
+* Capture timeout occurs even after tests have run successfully ([1bd45b6](https://github.com/karma-runner/karma-browserstack-launcher/commit/1bd45b6)), closes [#17](https://github.com/karma-runner/karma-browserstack-launcher/issues/17)
+
+
+
 <a name="0.1.8"></a>
 ## [0.1.8](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.7...v0.1.8) (2015-12-16)
 
