@@ -112,6 +112,18 @@ List of iOS simulators you can test on:
 - `device: 'iPhone 5', 'os_version': '6.0'`
 - `device: 'iPhone 5S', 'os_version': '7.0'`
 
+### CI/CD Build Environment Variables
+
+Many CI/CD systems will make the name or ID of the currently running build available via an environment variable. The follow environment variables below are supported by default:
+
+* `process.env.BUILD_NUMBER`
+* `process.env.BUILD_TAG`
+* `process.env.CI_BUILD_NUMBER`
+* `process.env.CI_BUILD_TAG`
+* `process.env.TRAVIS_BUILD_NUMBER`
+* `process.env.CIRCLE_BUILD_NUM`
+* `process.env.DRONE_BUILD_NUMBER`
+
 ---
 
 [BrowserStack's REST API documentation](https://www.browserstack.com/automate/rest-api#rest-api-browsers)
