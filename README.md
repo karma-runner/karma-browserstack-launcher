@@ -55,8 +55,8 @@ module.exports = function(config) {
 
 ### Global options
 
-- `username` your BS username (email), you can also use `BROWSER_STACK_USERNAME` env variable.
-- `accessKey` your BS access key (password), you can also use `BROWSER_STACK_ACCESS_KEY` env variable.
+- `username` your BS username, you can also use `BROWSER_STACK_USERNAME` env variable.
+- `accessKey` your BS access key, you can also use `BROWSER_STACK_ACCESS_KEY` env variable.
 - `startTunnel` do you wanna establish the BrowserStack tunnel ? (defaults to `true`)
 - `tunnelIdentifier` in case you want to start the BrowserStack tunnel outside `karma` by setting `startTunnel` to `false`, set the identifier passed to the `-localIdentifier` option here (optional)
 - `retryLimit` how many times do you want to retry to capture the browser ? (defaults to `3`)
