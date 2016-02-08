@@ -156,8 +156,14 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
       timeout: bsConfig.timeout || 300,
       project: bsConfig.project,
       name: bsConfig.name || 'Karma test',
-      build: bsConfig.build || process.env.TRAVIS_BUILD_NUMBER || process.env.BUILD_NUMBER ||
-        process.env.BUILD_TAG || process.env.CIRCLE_BUILD_NUM || null
+      build: bsConfig.build ||
+        process.env.BUILD_NUMBER ||
+        process.env.BUILD_TAG ||
+        process.env.CI_BUILD_NUMBER ||
+        process.env.CI_BUILD_TAG ||
+        process.env.TRAVIS_BUILD_NUMBER ||
+        process.env.CIRCLE_BUILD_NUM ||
+        process.env.DRONE_BUILD_NUMBER || null
     }
 
     if (typeof args.real_mobile !== 'undefined') {
