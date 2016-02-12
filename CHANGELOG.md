@@ -1,3 +1,18 @@
+<a name="0.1.10"></a>
+## [0.1.10](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.8...v0.1.10) (2016-02-12)
+
+
+### Bug Fixes
+
+* Capture timeout occurs even after tests have run successfully ([1bd45b6](https://github.com/karma-runner/karma-browserstack-launcher/commit/1bd45b6)), closes [#17](https://github.com/karma-runner/karma-browserstack-launcher/issues/17)
+* Ensure the browser gets terminated ([ea3ed1e](https://github.com/karma-runner/karma-browserstack-launcher/commit/ea3ed1e))
+
+### Features
+
+* add build number env vars for compatibility with drone and other CI systems ([054b8d4](https://github.com/karma-runner/karma-browserstack-launcher/commit/054b8d4))
+
+
+
 <a name="0.1.9"></a>
 ## [0.1.9](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.8...v0.1.9) (2016-01-10)
 
