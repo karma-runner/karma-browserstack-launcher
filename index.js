@@ -118,13 +118,20 @@ var formatError = function (error) {
   return error.toString()
 }
 
-var BrowserStackBrowser = function (id, emitter, args, logger,
+var BrowserStackBrowser = function (
+  id, emitter, args, logger,
   /* config */ config,
-  /* browserStackTunnel */ tunnel, /* browserStackClient */ client,
-  baseLauncherDecorator) {
+  /* browserStackTunnel */ tunnel,
+  /* browserStackClient */ client,
+  baseLauncherDecorator,
+  captureTimeoutLauncherDecorator,
+  retryLauncherDecorator
+) {
   var self = this
 
   baseLauncherDecorator(self)
+  captureTimeoutLauncherDecorator(self)
+  retryLauncherDecorator(self)
 
   var workerId = null
   var captured = false
@@ -217,6 +224,13 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
   }
 
   this.kill = function (done) {
+    var allDone = function () {
+      self._done()
+      if (done) {
+        done()
+      }
+    }
+
     if (!alreadyKilling) {
       alreadyKilling = q.defer()
 
@@ -239,9 +253,7 @@ var BrowserStackBrowser = function (id, emitter, args, logger,
       }
     }
 
-    if (done) {
-      alreadyKilling.promise.then(done)
-    }
+    return alreadyKilling.promise.then(allDone)
   }
 
   this.forceKill = function () {
