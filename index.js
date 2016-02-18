@@ -147,8 +147,12 @@ var BrowserStackBrowser = function (
   var captureTimeout = config.captureTimeout || 0
   var captureTimeoutId
   var retryLimit = bsConfig.retryLimit || 3
+  var previousUrl = null
 
   this.start = function (url) {
+    url = url || previousUrl
+    previousUrl = url
+
     // TODO(vojta): handle non os/browser/version
     var settings = {
       os: args.os,
@@ -177,7 +181,6 @@ var BrowserStackBrowser = function (
       settings.real_mobile = args.real_mobile
     }
 
-    this.url = url
     tunnel.then(function () {
       client.createWorker(settings, function (error, worker) {
         var sessionUrlShowed = false
@@ -289,7 +292,7 @@ var BrowserStackBrowser = function (
     log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout)
     self.kill(function () {
       if (retryLimit--) {
-        self.start(self.url)
+        self.start(previousUrl)
       } else {
         emitter.emit('browser_process_failure', self)
       }
