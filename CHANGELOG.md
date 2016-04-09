@@ -1,3 +1,13 @@
+<a name="0.1.11"></a>
+## [0.1.11](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.10...v0.1.11) (2016-04-09)
+
+
+### Bug Fixes
+
+* issue with url being 'undefined' after disconnect ([e746ecd](https://github.com/karma-runner/karma-browserstack-launcher/commit/e746ecd)), closes [#63](https://github.com/karma-runner/karma-browserstack-launcher/issues/63)
+
+
+
 <a name="0.1.10"></a>
 ## [0.1.10](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.8...v0.1.10) (2016-02-12)
 
