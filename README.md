@@ -66,10 +66,11 @@ module.exports = function(config) {
 - `name` the BS worker name (optional)
 - `project` the BS worker project name (optional)
 - `binaryBasePath` the BS binary base bath, you can also use `BROWSER_STACK_BINARY_BASE_PATH` env variable. This will override the default and set the base path to the BS local binary (optional)
-- `proxyHost` the host of your proxy as you would define it for BrowserstackLocal
-- `proxyPort` the port of your proxy as you would define it for BrowserstackLocal
-- `proxyUser` the username used for authentication with you proxy as you would define it for BrowserstackLocal
-- `proxyPass` the password used for authenticationwit your proxy as you would define it for BrowserstackLocal
+- `proxyHost` the host of your proxy for communicating with BrowserStack REST API and BrowserStackLocal (optional)
+- `proxyPort` the port of your proxy (optional)
+- `proxyUser` the username used for authentication with your proxy (optional)
+- `proxyPass` the password used for authentication with your proxy (optional)
+- `proxyProtocol` the protocol of your proxy (optional. default: `http`. valid: `http` or `https`)
 
 ### Per browser options
 

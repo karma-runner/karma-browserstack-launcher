@@ -90,11 +90,20 @@ var createBrowserStackClient = function (/* config.browserStack */config) {
 
   config = config || {}
 
-  // TODO(vojta): handle no username/pwd
-  var client = api.createClient({
+  var options = {
     username: env.BROWSER_STACK_USERNAME || config.username,
     password: env.BROWSER_STACK_ACCESS_KEY || config.accessKey
-  })
+  }
+
+  if (config.proxyHost && config.proxyPort) {
+    config.proxyProtocol = config.proxyProtocol || 'http'
+    var proxyAuth = (config.proxyUser && config.proxyPass)
+      ? (config.proxyUser + ':' + config.proxyPass + '@') : ''
+    options.proxy = config.proxyProtocol + '://' + proxyAuth + config.proxyHost + ':' + config.proxyPort
+  }
+
+  // TODO(vojta): handle no username/pwd
+  var client = api.createClient(options)
 
   var pollingTimeout = config.pollingTimeout || 1000
 
