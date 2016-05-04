@@ -1,3 +1,9 @@
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.11...v1.0.0) (2016-05-04)
+
+
+
+
 <a name="0.1.11"></a>
 ## [0.1.11](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.10...v0.1.11) (2016-04-09)
 
