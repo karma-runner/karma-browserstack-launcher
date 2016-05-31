@@ -7,6 +7,7 @@ function WorkerManager () {
   this._pollHandle = null
   this.workers = {}
   this.isPolling = false
+  this.shouldShutdown = false
 }
 
 WorkerManager.prototype.registerWorker = function registerWorker (workerData) {
@@ -47,7 +48,7 @@ WorkerManager.prototype.updateWorker = function updateWorker (workerData) {
 }
 
 WorkerManager.prototype.startPolling = function startPolling (client, pollingTimeout, callback) {
-  if (this.isPolling) {
+  if (this.isPolling || this.shouldShutdown) {
     return
   }
 
@@ -88,7 +89,7 @@ WorkerManager.prototype.stopPolling = function stopPolling () {
     this._pollHandle = null
   }
 
-  this.isPolling = false
+  this.shouldShutdown = true
 }
 
 // expose a single, shared instance of WorkerManager
