@@ -1,3 +1,18 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.11...v1.0.1) (2016-05-31)
+
+
+### Bug Fixes
+
+* urlencode proxy username and password ([ab42eee](https://github.com/karma-runner/karma-browserstack-launcher/commit/ab42eee))
+* Use separate property to shutdown workers ([221d49f](https://github.com/karma-runner/karma-browserstack-launcher/commit/221d49f)), closes [#62](https://github.com/karma-runner/karma-browserstack-launcher/issues/62)
+
+### Features
+
+* Pass proxy url to browserstack api ([0c1ca47](https://github.com/karma-runner/karma-browserstack-launcher/commit/0c1ca47))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.11...v1.0.0) (2016-05-04)
 
