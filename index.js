@@ -174,9 +174,9 @@ var BrowserStackBrowser = function (
       url: url + '?id=' + id,
       'browserstack.tunnel': true,
       timeout: bsConfig.timeout || 300,
-      project: bsConfig.project,
-      name: bsConfig.name || 'Karma test',
-      build: bsConfig.build ||
+      project: args.project || bsConfig.project,
+      name: args.name || bsConfig.name || 'Karma test',
+      build: args.build || bsConfig.build ||
         process.env.BUILD_NUMBER ||
         process.env.BUILD_TAG ||
         process.env.CI_BUILD_NUMBER ||
