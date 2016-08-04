@@ -36,7 +36,8 @@ var BrowserStackReporter = function (logger, /* BrowserStack:sessionMapping */ s
         status: apiStatus
       }, function (error, session) {
         if (error) {
-          // TODO
+          log.error('✖ Could not update BrowserStack status')
+          log.debug(error)
         }
         pendingUpdates--
         exitIfAllFinished()
