@@ -14,8 +14,6 @@ var BrowserStackReporter = function (logger, /* BrowserStack:sessionMapping */ s
 
   // We're only interested in the final results per browser
   this.onBrowserComplete = function (browser) {
-    var browserId = browser.launchId || browser.id
-
     var result = browser.lastResult
 
     if (result.disconnected) {
@@ -26,15 +24,15 @@ var BrowserStackReporter = function (logger, /* BrowserStack:sessionMapping */ s
       log.error('✖ Test Errored')
     }
 
+    var browserId = browser.launchId || browser.id
     if (browserId in sessionMapping) {
       pendingUpdates++
       var browserstackClient = Browserstack.createAutomateClient(sessionMapping.credentials)
-
       var apiStatus = !(result.failed || result.error || result.disconnected) ? 'completed' : 'error'
 
       browserstackClient.updateSession(sessionMapping[browserId], {
         status: apiStatus
-      }, function (error, session) {
+      }, function (error) {
         if (error) {
           log.error('✖ Could not update BrowserStack status')
           log.debug(error)
