@@ -3,7 +3,7 @@ var api = require('browserstack')
 var BrowserStackTunnel = require('browserstacktunnel-wrapper')
 var os = require('os')
 var workerManager = require('./worker-manager')
-var BrowserStackReporter = require('./BrowserStackReporter')
+var BrowserStackReporter = require('./browserstack-reporter')
 
 var createBrowserStackTunnel = function (logger, config, emitter) {
   var log = logger.create('launcher.browserstack')
