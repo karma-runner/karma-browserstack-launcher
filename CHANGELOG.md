@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.0.1...v1.1.0) (2016-09-05)
+
+
+### Features
+
+* add BrowserStack reporter ([ddb5779](https://github.com/karma-runner/karma-browserstack-launcher/commit/ddb5779)), closes [#72](https://github.com/karma-runner/karma-browserstack-launcher/issues/72)
+
+
+
 <a name="1.0.1"></a>
 ## [1.0.1](https://github.com/karma-runner/karma-browserstack-launcher/compare/v0.1.11...v1.0.1) (2016-05-31)
 
