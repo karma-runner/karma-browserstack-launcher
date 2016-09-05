@@ -91,7 +91,7 @@ module.exports = function(config) {
   config.set({
     // The rest of your karma config is here
     // ...
-    reporters: ['dots', 'browserStack']
+    reporters: ['dots', 'BrowserStack']
   })
 }
 ```
