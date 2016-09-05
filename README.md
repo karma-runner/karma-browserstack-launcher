@@ -81,6 +81,21 @@ module.exports = function(config) {
 - `os` which platform ?
 - `os_version` version of the platform
 
+### BrowserStack reporter
+
+To report session results back to BrowserStack for display on your BrowserStack dashboard, use the following additional configuration:
+
+```js
+// karma.conf.js
+module.exports = function(config) {
+  config.set({
+    // The rest of your karma config is here
+    // ...
+    reporters: ['dots', 'browserStack']
+  })
+}
+```
+
 ### Browserstack iOS simulators
 
 By default, your Selenium and JS tests will run on real iOS devices on BrowserStack. Since we are in the implementation phase, we are still working on a few things, such as adding more devices, ability to test on local URLs, etc.

@@ -3,6 +3,7 @@ var api = require('browserstack')
 var BrowserStackTunnel = require('browserstacktunnel-wrapper')
 var os = require('os')
 var workerManager = require('./worker-manager')
+var BrowserStackReporter = require('./BrowserStackReporter')
 
 var createBrowserStackTunnel = function (logger, config, emitter) {
   var log = logger.create('launcher.browserstack')
@@ -85,7 +86,7 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   return deferred.promise
 }
 
-var createBrowserStackClient = function (/* config.browserStack */config) {
+var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */ sessionMapping) {
   var env = process.env
 
   config = config || {}
@@ -100,6 +101,11 @@ var createBrowserStackClient = function (/* config.browserStack */config) {
     var proxyAuth = (config.proxyUser && config.proxyPass)
       ? (encodeURIComponent(config.proxyUser) + ':' + encodeURIComponent(config.proxyPass) + '@') : ''
     options.proxy = config.proxyProtocol + '://' + proxyAuth + config.proxyHost + ':' + config.proxyPort
+  }
+
+  sessionMapping.credentials = {
+    username: options.username,
+    password: options.password
   }
 
   // TODO(vojta): handle no username/pwd
@@ -134,7 +140,8 @@ var BrowserStackBrowser = function (
   /* browserStackClient */ client,
   baseLauncherDecorator,
   captureTimeoutLauncherDecorator,
-  retryLauncherDecorator
+  retryLauncherDecorator,
+  /* BrowserStack:sessionMapping */ sessionMapping
 ) {
   var self = this
 
@@ -208,6 +215,7 @@ var BrowserStackBrowser = function (
           // https://github.com/browserstack/api/issues/10
           if (!sessionUrlShowed) {
             log.info('%s session at %s', browserName, worker.browser_url)
+            sessionMapping[self.id] = worker.browser_url.split('/').slice(-1)[0]
             sessionUrlShowed = true
           }
 
@@ -313,5 +321,7 @@ var BrowserStackBrowser = function (
 module.exports = {
   'browserStackTunnel': ['factory', createBrowserStackTunnel],
   'browserStackClient': ['factory', createBrowserStackClient],
-  'launcher:BrowserStack': ['type', BrowserStackBrowser]
+  'launcher:BrowserStack': ['type', BrowserStackBrowser],
+  'reporter:BrowserStack': ['type', BrowserStackReporter],
+  'BrowserStack:sessionMapping': ['value', {}]
 }
