@@ -1,3 +1,13 @@
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.1.0...v1.1.1) (2016-09-05)
+
+
+### Bug Fixes
+
+* update incorrect launcher require path ([5cc2d9c](https://github.com/karma-runner/karma-browserstack-launcher/commit/5cc2d9c)), closes [#73](https://github.com/karma-runner/karma-browserstack-launcher/issues/73)
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.0.1...v1.1.0) (2016-09-05)
 
