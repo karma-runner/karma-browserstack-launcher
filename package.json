@@ -24,7 +24,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^1.0.0",
+    "eslint": "^3.11.1",
     "eslint-config-standard": "^4.0.0",
     "eslint-plugin-standard": "^1.2.0",
     "grunt": "~0.4.5",
