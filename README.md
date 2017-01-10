@@ -80,6 +80,9 @@ module.exports = function(config) {
 - `browser_version` version of the browser
 - `os` which platform ?
 - `os_version` version of the platform
+- `build` the BS worker build name (optional, defaults to global)
+- `name` the BS worker name (optional, defaults to global)
+- `project` the BS worker project name (optional, defaults to global)
 
 ### BrowserStack reporter
 
