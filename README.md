@@ -71,6 +71,7 @@ module.exports = function(config) {
 - `proxyUser` the username used for authentication with your proxy (optional)
 - `proxyPass` the password used for authentication with your proxy (optional)
 - `proxyProtocol` the protocol of your proxy (optional. default: `http`. valid: `http` or `https`)
+- `forcelocal` force traffic through the local BrowserStack tunnel, passes flag through to BrowserStackTunnel
 
 ### Per browser options
 
