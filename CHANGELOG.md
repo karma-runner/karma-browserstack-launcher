@@ -1,3 +1,15 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.1.1...v1.2.0) (2017-01-29)
+
+
+### Features
+
+* pass forcelocal to tunnel ([693a4aa](https://github.com/karma-runner/karma-browserstack-launcher/commit/693a4aa))
+* permit overriding `name`, `build`, and `project` on a per-browser basis ([9c77a96](https://github.com/karma-runner/karma-browserstack-launcher/commit/9c77a96))
+* Update browserstacktunnel wrapper ([4519a37](https://github.com/karma-runner/karma-browserstack-launcher/commit/4519a37))
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.1.0...v1.1.1) (2016-09-05)
 
