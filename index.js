@@ -106,7 +106,8 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
 
   sessionMapping.credentials = {
     username: options.username,
-    password: options.password
+    password: options.password,
+    proxy: options.proxy
   }
 
   // TODO(vojta): handle no username/pwd
