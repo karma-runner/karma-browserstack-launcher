@@ -72,6 +72,7 @@ module.exports = function(config) {
 - `proxyPass` the password used for authentication with your proxy (optional)
 - `proxyProtocol` the protocol of your proxy (optional. default: `http`. valid: `http` or `https`)
 - `forcelocal` force traffic through the local BrowserStack tunnel, passes flag through to BrowserStackTunnel
+- `video` enable video recording of session on BrowserStack (defaults to `true`)
 
 ### Per browser options
 
