@@ -191,7 +191,8 @@ var BrowserStackBrowser = function (
         process.env.CI_BUILD_TAG ||
         process.env.TRAVIS_BUILD_NUMBER ||
         process.env.CIRCLE_BUILD_NUM ||
-        process.env.DRONE_BUILD_NUMBER || null
+        process.env.DRONE_BUILD_NUMBER || null,
+      video: bsConfig.video !== undefined ? bsConfig.video : true
     }
 
     if (typeof args.real_mobile !== 'undefined') {
