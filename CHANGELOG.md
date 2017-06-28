@@ -1,3 +1,16 @@
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.2.0...v1.3.0) (2017-06-28)
+
+
+### Features
+
+* add support for using BrowserStackReporter with a proxy  ([b0f8031](https://github.com/karma-runner/karma-browserstack-launcher/commit/b0f8031))
+* allow the user to disable browserstack video recording ([b3cce6c](https://github.com/karma-runner/karma-browserstack-launcher/commit/b3cce6c))
+* **deps:** update to the latest ([6c719d2](https://github.com/karma-runner/karma-browserstack-launcher/commit/6c719d2))
+* **deps:** update to tunnel 2.0.1 ([9617438](https://github.com/karma-runner/karma-browserstack-launcher/commit/9617438))
+
+
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.1.1...v1.2.0) (2017-01-29)
 
