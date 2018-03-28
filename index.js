@@ -22,7 +22,8 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
     proxyPort: bsConfig.proxyPort || null,
     proxyUser: bsConfig.proxyUser || null,
     proxyPass: bsConfig.proxyPass || null,
-    forcelocal: bsConfig.forcelocal || null
+    forcelocal: bsConfig.forcelocal || null,
+    enableLoggingForApi: bsConfig.enableLoggingForApi || null
   }
 
   if (bsConfig.startTunnel === false) {
