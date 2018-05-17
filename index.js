@@ -196,6 +196,10 @@ var BrowserStackBrowser = function (
       video: bsConfig.video !== undefined ? bsConfig.video : true
     }
 
+    if (bsConfig.extraCapabilities) {
+      settings = Object.assign({}, settings, bsConfig.extraCapabilities)
+    }
+
     if (typeof args.real_mobile !== 'undefined') {
       settings.real_mobile = args.real_mobile
     }
