@@ -78,6 +78,7 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
       }
 
       if (workerManager.isPolling) {
+        log.debug('Exiting tests; stopping polling')
         workerManager.stopPolling()
       }
 
@@ -240,6 +241,15 @@ var BrowserStackBrowser = function (
               log.debug('%s job with id %s has been deleted.', browserName, workerId)
               break
           }
+
+          emitter.on('exit', function (done) {
+            if (workerManager.isPolling) {
+              log.debug('Exiting tests; stopping polling')
+              workerManager.stopPolling()
+            }
+
+            done()
+          })
         })
       })
     }, function () {
