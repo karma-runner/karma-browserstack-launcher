@@ -73,7 +73,6 @@ module.exports = function(config) {
 - `proxyProtocol` the protocol of your proxy (optional. default: `http`. valid: `http` or `https`)
 - `forcelocal` force traffic through the local BrowserStack tunnel, passes flag through to BrowserStackTunnel
 - `video` enable video recording of session on BrowserStack (defaults to `true`)
-- `extraCapabilities` supply additional capabilities as per https://www.browserstack.com/automate/capabilities
 
 ### Per browser options
 
@@ -86,6 +85,8 @@ module.exports = function(config) {
 - `build` the BS worker build name (optional, defaults to global)
 - `name` the BS worker name (optional, defaults to global)
 - `project` the BS worker project name (optional, defaults to global)
+
+> Note: you can also pass through any additional options supported by browserstack. (EG. `timezone`, `resolution`, etc.)
 
 ### BrowserStack reporter
 

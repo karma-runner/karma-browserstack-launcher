@@ -190,10 +190,7 @@ var BrowserStackBrowser = function (
       bsConfig
     )
 
-    var browserSpecificSettings = Object.assign(
-      {},
-      args
-    )
+    var browserSpecificSettings = args
 
     // TODO(vojta): handle non os/browser/version
     var settings = Object.assign(
