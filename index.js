@@ -184,13 +184,14 @@ var BrowserStackBrowser = function (
         process.env.CIRCLE_BUILD_NUM ||
         process.env.DRONE_BUILD_NUMBER || null,
         // TODO(vojta): remove "version" (only for B-C)
-        browser_version: args.version || 'latest'
+        browser_version: args.version || 'latest',
+        video: true
       },
       bsConfig
     )
 
     var browserSpecificSettings = Object.assign(
-      { video: true },
+      {},
       args
     )
 
