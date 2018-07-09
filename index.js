@@ -175,7 +175,7 @@ var BrowserStackBrowser = function (
       {
         timeout: 300,
         name: 'Karma test',
-        build:  process.env.BUILD_NUMBER ||
+        build: process.env.BUILD_NUMBER ||
         process.env.BUILD_TAG ||
         process.env.CI_BUILD_NUMBER ||
         process.env.CI_BUILD_TAG ||
@@ -201,7 +201,7 @@ var BrowserStackBrowser = function (
       },
       globalSettings,
       browserSpecificSettings
-    );
+    )
 
     if (typeof args.real_mobile !== 'undefined') {
       settings.real_mobile = args.real_mobile
