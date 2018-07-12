@@ -15,7 +15,7 @@
   ],
   "author": "Vojta Jina <vojta.jina@gmail.com>",
   "dependencies": {
-    "browserstack": "1.5.0",
+    "browserstack": "1.5.1",
     "browserstacktunnel-wrapper": "~2.0.2",
     "q": "~1.5.0"
   },
