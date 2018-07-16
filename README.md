@@ -86,7 +86,8 @@ module.exports = function(config) {
 - `name` the BS worker name (optional, defaults to global)
 - `project` the BS worker project name (optional, defaults to global)
 
-> Note: you can also pass through any additional options supported by browserstack. (EG. `timezone`, `resolution`, etc.)
+> **Note:** you can also pass through any additional options supported by browserstack. (EG. `timezone`, `resolution`, etc.)  
+See https://www.browserstack.com/automate/capabilities for a full list of supported options.
 
 ### BrowserStack reporter
 

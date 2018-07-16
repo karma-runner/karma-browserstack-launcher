@@ -190,8 +190,6 @@ var BrowserStackBrowser = function (
       bsConfig
     )
 
-    var browserSpecificSettings = args
-
     // TODO(vojta): handle non os/browser/version
     var settings = Object.assign(
       {
@@ -199,12 +197,8 @@ var BrowserStackBrowser = function (
         'browserstack.tunnel': true
       },
       globalSettings,
-      browserSpecificSettings
+      args
     )
-
-    if (typeof args.real_mobile !== 'undefined') {
-      settings.real_mobile = args.real_mobile
-    }
 
     tunnel.then(function () {
       client.createWorker(settings, function (error, worker) {
