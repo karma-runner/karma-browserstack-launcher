@@ -172,34 +172,33 @@ var BrowserStackBrowser = function (
     url = url || previousUrl
     previousUrl = url
 
-    // TODO(vojta): handle non os/browser/version
-    var settings = {
-      os: args.os,
-      os_version: args.os_version,
-      device: args.device,
-      browser: args.browser,
-      tunnelIdentifier: bsConfig.tunnelIdentifier,
-      // TODO(vojta): remove "version" (only for B-C)
-      browser_version: args.browser_version || args.version || 'latest',
-      url: url + '?id=' + id,
-      'browserstack.tunnel': true,
-      timeout: bsConfig.timeout || 300,
-      project: args.project || bsConfig.project,
-      name: args.name || bsConfig.name || 'Karma test',
-      build: args.build || bsConfig.build ||
-        process.env.BUILD_NUMBER ||
+    var globalSettings = Object.assign(
+      {
+        timeout: 300,
+        name: 'Karma test',
+        build: process.env.BUILD_NUMBER ||
         process.env.BUILD_TAG ||
         process.env.CI_BUILD_NUMBER ||
         process.env.CI_BUILD_TAG ||
         process.env.TRAVIS_BUILD_NUMBER ||
         process.env.CIRCLE_BUILD_NUM ||
         process.env.DRONE_BUILD_NUMBER || null,
-      video: bsConfig.video !== undefined ? bsConfig.video : true
-    }
+        // TODO(vojta): remove "version" (only for B-C)
+        browser_version: args.version || 'latest',
+        video: true
+      },
+      bsConfig
+    )
 
-    if (typeof args.real_mobile !== 'undefined') {
-      settings.real_mobile = args.real_mobile
-    }
+    // TODO(vojta): handle non os/browser/version
+    var settings = Object.assign(
+      {
+        url: url + '?id=' + id,
+        'browserstack.tunnel': true
+      },
+      globalSettings,
+      args
+    )
 
     tunnel.then(function () {
       client.createWorker(settings, function (error, worker) {
