@@ -241,7 +241,7 @@ var BrowserStackBrowser = function (
           }
         })
       })
-    }, function () {
+    }).catch(function () {
       emitter.emit('browser_process_failure', self)
     })
   }
