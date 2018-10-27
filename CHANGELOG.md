@@ -1,3 +1,14 @@
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.3.0...v1.4.0) (2018-10-27)
+
+
+### Features
+
+* add support for the enableLoggingForApi property ([b6776f4](https://github.com/karma-runner/karma-browserstack-launcher/commit/b6776f4))
+* allow additional browserstack capabitilies to be configured verbatim ([62fc997](https://github.com/karma-runner/karma-browserstack-launcher/commit/62fc997))
+
+
+
 <a name="1.3.0"></a>
 # [1.3.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.2.0...v1.3.0) (2017-06-28)
 
