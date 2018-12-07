@@ -59,8 +59,7 @@ module.exports = function (grunt) {
       'bump-only:' + (type || 'patch'),
       'conventionalChangelog',
       'bump-commit',
-      'conventionalGithubReleaser',
-      'npm-publish'
+      'conventionalGithubReleaser'
     ])
   })
 }
