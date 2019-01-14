@@ -77,7 +77,7 @@ module.exports = function(config) {
 ### Per browser options
 
 - `device` name of the device
-- `real_mobile ` allow browserstack to use a simulator
+- `real_mobile` or `realMobile` allows the session to run on a real mobile device instead of an emulator / simulator (optional, defaults to `false`)
 - `browser` name of the browser
 - `browser_version` version of the browser
 - `os` which platform ?
