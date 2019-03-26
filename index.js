@@ -1,86 +1,31 @@
-var q = require('q')
-var api = require('browserstack')
-var BrowserStackTunnel = require('browserstacktunnel-wrapper')
-var os = require('os')
-var workerManager = require('./worker-manager')
-var BrowserStackReporter = require('./browserstack-reporter')
+const Q = require('q')
+const api = require('browserstack')
+const browserstack = require('browserstack-local')
+const workerManager = require('./worker-manager')
+const BrowserStackReporter = require('./browserstack-reporter')
 
 var createBrowserStackTunnel = function (logger, config, emitter) {
-  var log = logger.create('launcher.browserstack')
-  var bsConfig = config.browserStack || {}
-  var bsBinaryBasePath = process.env.BROWSER_STACK_BINARY_BASE_PATH || bsConfig.binaryBasePath || null
-  var bsRunConfig = {
-    key: process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey,
-    localIdentifier: bsConfig.localIdentifier || bsConfig.tunnelIdentifier,
-    jarFile: process.env.BROWSER_STACK_TUNNEL_JAR || bsConfig.jarFile,
-    hosts: [{
-      name: config.hostname,
-      port: config.port,
-      sslFlag: 0
-    }],
-    proxyHost: bsConfig.proxyHost || null,
-    proxyPort: bsConfig.proxyPort || null,
-    proxyUser: bsConfig.proxyUser || null,
-    proxyPass: bsConfig.proxyPass || null,
-    forcelocal: bsConfig.forcelocal || null,
-    enableLoggingForApi: bsConfig.enableLoggingForApi || null
-  }
-
+  const log = logger.create('launcher.browserstack')
+  const bsConfig = config.browserStack || {}
   if (bsConfig.startTunnel === false) {
-    bsConfig.tunnelIdentifier = bsRunConfig.localIdentifier
-    return q()
+    return Q()
   }
 
-  bsRunConfig.localIdentifier = bsRunConfig.localIdentifier || 'karma' + Math.random()
-  bsConfig.tunnelIdentifier = bsRunConfig.localIdentifier
+  const bsAccesskey = process.env.BROWSERSTACK_ACCESS_KEY || bsConfig.accessKey
+  const bsLocal = new browserstack.Local()
+  const bsLocalArgs = { key: bsAccesskey }
+  const deferred = Q.defer()
 
-  if (bsBinaryBasePath) {
-    switch (os.platform()) {
-      case 'linux':
-        switch (os.arch()) {
-          case 'x64':
-            bsRunConfig.linux64Bin = bsBinaryBasePath
-            break
-          case 'ia32':
-            bsRunConfig.linux32Bin = bsBinaryBasePath
-            break
-        }
-        break
-      case 'darwin':
-        bsRunConfig.osxBin = bsBinaryBasePath
-        break
-      default:
-        bsRunConfig.win32Bin = bsBinaryBasePath
-        break
-    }
-  }
-
-  log.debug('Establishing the tunnel on %s:%s', config.hostname, config.port)
-
-  var deferred = q.defer()
-  var tunnel = new BrowserStackTunnel(bsRunConfig)
-
-  tunnel.start(function (error) {
-    if (error) {
-      log.error('Can not establish the tunnel.\n%s', error.toString())
-      deferred.reject(error)
-    } else {
-      log.debug('Tunnel established.')
-      deferred.resolve()
-    }
+  log.debug('Starting BrowserStackLocal')
+  bsLocal.start(bsLocalArgs, function () {
+    log.debug('Started BrowserStackLocal')
+    deferred.resolve()
   })
 
   emitter.on('exit', function (done) {
-    log.debug('Shutting down the tunnel.')
-    tunnel.stop(function (error) {
-      if (error) {
-        log.error(error)
-      }
-
-      if (workerManager.isPolling) {
-        workerManager.stopPolling()
-      }
-
+    log.debug('Shutting down BrowserStackLocal')
+    bsLocal.stop(function () {
+      log.debug('Stopped BrowserStackLocal')
       done()
     })
   })
@@ -94,8 +39,8 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
   config = config || {}
 
   var options = {
-    username: env.BROWSER_STACK_USERNAME || config.username,
-    password: env.BROWSER_STACK_ACCESS_KEY || config.accessKey
+    username: env.BROWSERSTACK_USERNAME || config.username,
+    password: env.BROWSERSTACK_ACCESS_KEY || config.accessKey
   }
 
   if (config.proxyHost && config.proxyPort) {
@@ -103,6 +48,10 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
     var proxyAuth = (config.proxyUser && config.proxyPass)
       ? (encodeURIComponent(config.proxyUser) + ':' + encodeURIComponent(config.proxyPass) + '@') : ''
     options.proxy = config.proxyProtocol + '://' + proxyAuth + config.proxyHost + ':' + config.proxyPort
+  }
+
+  if (!config.browserstack || config.browserStack.startTunnel !== false) {
+    options.Local = true
   }
 
   sessionMapping.credentials = {
@@ -177,12 +126,12 @@ var BrowserStackBrowser = function (
         timeout: 300,
         name: 'Karma test',
         build: process.env.BUILD_NUMBER ||
-        process.env.BUILD_TAG ||
-        process.env.CI_BUILD_NUMBER ||
-        process.env.CI_BUILD_TAG ||
-        process.env.TRAVIS_BUILD_NUMBER ||
-        process.env.CIRCLE_BUILD_NUM ||
-        process.env.DRONE_BUILD_NUMBER || null,
+          process.env.BUILD_TAG ||
+          process.env.CI_BUILD_NUMBER ||
+          process.env.CI_BUILD_TAG ||
+          process.env.TRAVIS_BUILD_NUMBER ||
+          process.env.CIRCLE_BUILD_NUM ||
+          process.env.DRONE_BUILD_NUMBER || null,
         // TODO(vojta): remove "version" (only for B-C)
         browser_version: args.version || 'latest',
         video: true
@@ -255,7 +204,7 @@ var BrowserStackBrowser = function (
     }
 
     if (!alreadyKilling) {
-      alreadyKilling = q.defer()
+      alreadyKilling = Q.defer()
 
       if (workerId) {
         log.debug('Killing %s (worker %s).', browserName, workerId)
@@ -282,7 +231,7 @@ var BrowserStackBrowser = function (
   this.forceKill = function () {
     var self = this
 
-    return q.promise(function (resolve) {
+    return Q.promise(function (resolve) {
       self.kill(resolve)
     })
   }
