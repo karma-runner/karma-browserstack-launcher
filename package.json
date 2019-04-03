@@ -1,6 +1,6 @@
 {
   "name": "karma-browserstack-launcher",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A Karma plugin. Launch any browser on BrowserStack!",
   "main": "index.js",
   "repository": {

@@ -11,7 +11,7 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
     return Q()
   }
 
-  const bsAccesskey = process.env.BROWSERSTACK_ACCESS_KEY || bsConfig.accessKey
+  const bsAccesskey = process.env.BROWSERSTACK_ACCESS_KEY || process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey
   const bsLocal = new browserstack.Local()
   const bsLocalArgs = { key: bsAccesskey }
   const deferred = Q.defer()
@@ -39,8 +39,8 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
   config = config || {}
 
   var options = {
-    username: env.BROWSERSTACK_USERNAME || config.username,
-    password: env.BROWSERSTACK_ACCESS_KEY || config.accessKey
+    username: env.BROWSERSTACK_USERNAME || env.BROWSER_STACK_USERNAME || config.username,
+    password: env.BROWSERSTACK_ACCESS_KEY || env.BROWSER_STACK_ACCESS_KEY || config.accessKey
   }
 
   if (config.proxyHost && config.proxyPort) {
