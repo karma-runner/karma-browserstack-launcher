@@ -1,3 +1,5 @@
+'use strict'
+
 const Q = require('q')
 const api = require('browserstack')
 const browserstack = require('browserstack-local')
@@ -50,7 +52,7 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
     options.proxy = config.proxyProtocol + '://' + proxyAuth + config.proxyHost + ':' + config.proxyPort
   }
 
-  if (!config.browserstack || config.browserStack.startTunnel !== false) {
+  if (!config || config.startTunnel !== false) {
     options.Local = true
   }
 

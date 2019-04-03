@@ -1,0 +1,10 @@
+{
+  "extends": "../.eslintrc",
+  "env": {
+    "mocha": true
+  },
+  "rules": {
+    "no-new": "off",
+    "standard/no-callback-literal": "off"
+  }
+}

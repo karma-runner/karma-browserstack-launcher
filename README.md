@@ -7,23 +7,35 @@
 
 > Use any browser on [BrowserStack](https://www.browserstack.com/)!
 
-
 ## Installation
 
-The easiest way is to keep `karma-browserstack-launcher` as a devDependency in your `package.json`. Just run,
+Install `karma-browserstack-launcher` as a `devDependency` in your package.json:
 
-```bash
+```sh
 $ npm install karma-browserstack-launcher --save-dev
 ```
-
-and it will be added automatically.
-
 
 ## Configuration
 
 ```js
 // karma.conf.js
 module.exports = function(config) {
+  const customLaunchers = {
+    bs_firefox_mac: {
+      base: 'BrowserStack',
+      browser: 'firefox',
+      browser_version: '21.0',
+      os: 'OS X',
+      os_version: 'Mountain Lion'
+    },
+    bs_iphone5: {
+      base: 'BrowserStack',
+      device: 'iPhone 5',
+      os: 'ios',
+      os_version: '6.0'
+    }
+  };
+  
   config.set({
     // global config of your BrowserStack account
     browserStack: {
@@ -32,58 +44,165 @@ module.exports = function(config) {
     },
 
     // define browsers
-    customLaunchers: {
-      bs_firefox_mac: {
-        base: 'BrowserStack',
-        browser: 'firefox',
-        browser_version: '21.0',
-        os: 'OS X',
-        os_version: 'Mountain Lion'
-      },
-      bs_iphone5: {
-        base: 'BrowserStack',
-        device: 'iPhone 5',
-        os: 'ios',
-        os_version: '6.0'
-      }
-    },
-
-    browsers: ['bs_firefox_mac', 'bs_iphone5']
+    customLaunchers: customLaunchers,
+    browsers: Object.keys(customLaunchers)
   })
 }
 ```
 
-### Global options
+**Note: this config assumes that `process.env.BROWSERSTACK_USERNAME` and `process.env.BROWSERSTACK_ACCESS_KEY` are set.**
 
-- `username` your BS username, you can also use `BROWSERSTACK_USERNAME` env variable.
-- `accessKey` your BS access key, you can also use `BROWSERSTACK_ACCESS_KEY` env variable.
-- `startTunnel` do you wanna establish the BrowserStack tunnel ? (defaults to `true`)
-- `tunnelIdentifier` in case you want to start the BrowserStack tunnel outside `karma` by setting `startTunnel` to `false`, set the identifier passed to the `-localIdentifier` option here (optional)
-- `retryLimit` how many times do you want to retry to capture the browser ? (defaults to `3`)
-- `captureTimeout` the browser capture timeout (defaults to `120`)
-- `timeout` the BS worker timeout (defaults to `300`
-- `build` the BS worker build name (optional)
-- `name` the BS worker name (optional)
-- `project` the BS worker project name (optional)
-- `proxyHost` the host of your proxy for communicating with BrowserStack REST API and BrowserStackLocal (optional)
-- `proxyPort` the port of your proxy (optional)
-- `proxyUser` the username used for authentication with your proxy (optional)
-- `proxyPass` the password used for authentication with your proxy (optional)
-- `proxyProtocol` the protocol of your proxy (optional. default: `http`. valid: `http` or `https`)
-- `forcelocal` force traffic through the local BrowserStack tunnel, passes flag through to BrowserStackTunnel
-- `video` enable video recording of session on BrowserStack (defaults to `true`)
+### `browserStack` Config Properties
 
-### Per browser options
+#### `username`
 
-- `device` name of the device
-- `real_mobile` or `realMobile` allows the session to run on a real mobile device instead of an emulator / simulator (optional, defaults to `false`)
-- `browser` name of the browser
-- `browser_version` version of the browser
-- `os` which platform ?
-- `os_version` version of the platform
-- `build` the BS worker build name (optional, defaults to global)
-- `name` the BS worker name (optional, defaults to global)
-- `project` the BS worker project name (optional, defaults to global)
+Type: `string` Default: `process.env.BROWSERSTACK_USERNAME`
+
+Your BrowserStack username (if you don't have an account you can sign up [here](https://www.browserstack.com/users/sign_up)).
+
+#### `accessKey`
+
+Type: `string` Default: `process.env.BROWSERSTACK_ACCESS_KEY`
+
+Your BrowserStack access key.
+
+#### `startTunnel`
+
+Type: `boolean` Default: `true`
+
+If `true`, the BrowserStack tunnel will be started automatically.
+
+#### `tunnelIdentifier` (optional)
+
+Type: `string`
+
+In case you want to start the BrowserStack tunnel outside of `karma` by setting `startTunnel` to `false`, set the identifier passed to `-localIdentifier` option here
+
+#### `retryLimit`
+
+Type: `number` Default: `3`
+
+The number of times to retry browser capture.
+
+#### `captureTimeout`
+
+Type: `number` Default: `120`
+
+The timeout for capturing the browser.
+
+#### `timeout`
+
+Type: `number` Default: `300`
+
+The BrowserStack worker timeout.
+
+#### `build` (optional)
+
+Type: `string`
+
+The BrowserStack worker build name.
+
+#### `name` (optional)
+
+Type: `string`
+
+The BrowserStack worker name.
+
+#### `project` (optional)
+
+Type: `string`
+
+The BrowserStack worker project name.
+
+#### `proxyHost` (optional)
+
+Type: `string`
+
+The host of your proxy for communicating with the BrowserStack REST API and BrowserStackLocal.
+
+#### `proxyPort` (optional)
+
+Type: `number`
+
+The port of your proxy.
+
+#### `proxyUser` (optional)
+
+Type: `string`
+
+The username used for authenticating with your proxy.
+
+#### `proxyPass` (optional)
+
+Type: `string`
+
+The password used for authenticating with your proxy.
+
+#### `proxyProtocol`
+
+Type: `string` Default: `http`
+
+The protocol of your proxy. (`http` or `https`)
+
+#### `video`
+
+Type: `boolean` Default: `true`
+
+Enable video recording of session on BrowserStack.
+
+### Browser Options
+
+#### `device`
+
+The name of the device.
+
+#### `real_mobile` or `realMobile`
+
+Type: `boolean` Default: `false`
+
+Allows the session to run on a real mobile device instead of an emulator / simulator.
+
+#### `browser`
+
+Type: `string`
+
+The name of the browser
+
+#### `browser_version`
+
+Type: `string`
+
+The version of the browser.
+
+#### `os`
+
+Type: `string`
+
+The platform to run on.
+
+#### `os_version`
+
+Type: `string`
+
+The version of the platform.
+
+#### `build` (optional)
+
+Type: `string` Default: `browserStack.build`
+
+The BrowserStack worker build name
+
+#### `name` (optional)
+
+Type: `string` Default: `browserStack.name`
+
+The BrowserStack worker name.
+
+#### `project` (optional)
+
+Type: `string` Default: `browserStack.project`
+
+The BrowserStack worker project name.
 
 > **Note:** you can also pass through any additional options supported by browserstack. (EG. `timezone`, `resolution`, etc.)  
 See https://www.browserstack.com/automate/capabilities for a full list of supported options.

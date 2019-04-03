@@ -1,3 +1,5 @@
+'use strict'
+
 var Browserstack = require('browserstack')
 
 var BrowserStackReporter = function (logger, /* BrowserStack:sessionMapping */ sessionMapping) {

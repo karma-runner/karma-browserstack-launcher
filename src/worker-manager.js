@@ -1,3 +1,5 @@
+'use strict'
+
 var Worker = require('./worker')
 
 /**
@@ -87,6 +89,7 @@ WorkerManager.prototype.stopPolling = function stopPolling () {
   if (this._pollHandle) {
     clearTimeout(this._pollHandle)
     this._pollHandle = null
+    this.isPolling = false
   }
 
   this.shouldShutdown = true

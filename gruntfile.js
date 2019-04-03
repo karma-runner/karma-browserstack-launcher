@@ -38,20 +38,10 @@ module.exports = function (grunt) {
           'CHANGELOG.md'
         ]
       }
-    },
-    eslint: {
-      target: [
-        'index.js',
-        'worker.js',
-        'worker-manager.js',
-        'gruntfile.js'
-      ]
     }
   })
 
   require('load-grunt-tasks')(grunt)
-
-  grunt.registerTask('default', ['eslint'])
 
   grunt.registerTask('release', 'Bump the version and publish to NPM.', function (type) {
     grunt.task.run([
