@@ -1,3 +1,13 @@
+<a name="1.5.1"></a>
+# [1.5.1](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.3.0...v1.5.1) (2019-04-03)
+
+
+### Features
+
+* Switched to official browserstack local package, as it is frequently updated and used across multiple products.
+* Code refactored. 
+
+
 <a name="1.4.0"></a>
 # [1.4.0](https://github.com/karma-runner/karma-browserstack-launcher/compare/v1.3.0...v1.4.0) (2018-10-27)
 
