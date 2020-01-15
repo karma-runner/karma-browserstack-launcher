@@ -116,6 +116,7 @@ var BrowserStackBrowser = function (
   var captureTimeoutId
   var retryLimit = bsConfig.retryLimit || 3
   var previousUrl = null
+  var keepAliveEnabled = false
 
   this.start = function (url) {
     url = url || previousUrl
@@ -173,6 +174,8 @@ var BrowserStackBrowser = function (
 
           switch (status) {
             case 'running':
+              keepAliveEnabled = true
+              startKeepAlive()
               log.debug('%s job started with id %s', browserName, workerId)
 
               if (captureTimeout && !captured) {
@@ -195,6 +198,24 @@ var BrowserStackBrowser = function (
     })
   }
 
+  var startKeepAlive = function () {
+    if (bsConfig.keepAlive && keepAliveEnabled) {
+      var session = sessionMapping[self.id]
+      log.debug(`keepAlive enabled and being executed for ID: '${workerId}, session: '${session}'`)
+      try {
+        client.takeScreenshot(workerId, function (err, response) {
+          if (err) {
+            log.error(`unable to issue keep alive due to: ${err}`)
+          }
+          log.debug(JSON.stringify(response))
+        })
+      } catch (e) {
+        log.error(e)
+      }
+      setTimeout(startKeepAlive, bsConfig.keepAliveDelay)
+    }
+  }
+
   this.kill = function (done) {
     var allDone = function () {
       self._done()
@@ -207,7 +228,8 @@ var BrowserStackBrowser = function (
       alreadyKilling = Q.defer()
 
       if (workerId) {
-        log.debug('Killing %s (worker %s).', browserName, workerId)
+        keepAliveEnabled = false
+        log.info('Killing %s (worker %s).', browserName, workerId)
         client.terminateWorker(workerId, function () {
           log.debug('%s (worker %s) successfully killed.', browserName, workerId)
 
