@@ -188,6 +188,7 @@ var BrowserStackBrowser = function (
               break
 
             case 'delete':
+              keepAliveEnabled = false
               log.debug('%s job with id %s has been deleted.', browserName, workerId)
               break
           }
