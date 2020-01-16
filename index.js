@@ -213,7 +213,8 @@ var BrowserStackBrowser = function (
       } catch (e) {
         log.error(e)
       }
-      setTimeout(startKeepAlive, bsConfig.keepAliveDelay)
+      var delay = bsConfig.keepAliveDelay || 60000
+      setTimeout(startKeepAlive, delay)
     }
   }
 
