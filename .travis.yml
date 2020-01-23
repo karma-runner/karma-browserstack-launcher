@@ -1,14 +1,11 @@
 sudo: false
 language: node_js
 node_js:
-  - 4
-  - 6
-  - stable
+  - 8
+  - 10
 
-# Make sure we have new npm on Node 0.10.
 before_install:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - npm config set loglevel warn
 
 before_script:
   - npm install -g grunt-cli
