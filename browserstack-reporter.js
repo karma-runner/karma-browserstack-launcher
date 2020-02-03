@@ -174,9 +174,9 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
         }
 
         if (typeof buildId === 'undefined') {
-          console.log('build id is undefined ')
+          log.debug('build id is undefined ')
           common.getSessionDetails(log, browserstackClient, sessionMapping, browserId, config, function(sessionObj) {
-            console.log("Response session object: " + sessionObj)
+            log.debug("Response session object: " + sessionObj)
             browserUrl = sessionObj['automation_session']['browser_url']
             if (typeof browserUrl !== 'undefined') {
               buildId = browserUrl.split('/').slice(-3)[0]

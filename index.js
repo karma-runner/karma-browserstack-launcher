@@ -123,7 +123,7 @@ var BrowserStackBrowser = function(
   var previousUrl = null
 
   this.start = function(url) {
-    console.debug("Starting session on URL endpoint: " + url)
+    log.debug("Starting session on URL endpoint: " + url)
     url = url || previousUrl
     previousUrl = url
 
@@ -143,8 +143,8 @@ var BrowserStackBrowser = function(
       },
       bsConfig
     )
-    console.debug("Global settings:" + JSON.stringify(globalSettings))
-    console.debug("ARGS:" + JSON.stringify(args))
+    log.debug("Global settings:" + JSON.stringify(globalSettings))
+    log.debug("ARGS:" + JSON.stringify(args))
     // TODO(vojta): handle non os/browser/version
     if(args.real_mobile === true && args.os.toLowerCase() === 'ios' && url.toLowerCase().includes('localhost')){
       url = url.replace('localhost', 'bs-local.com')
@@ -160,7 +160,7 @@ var BrowserStackBrowser = function(
 
     tunnel.then(function() {
       client.createWorker(settings, function(error, worker) {
-        console.debug("Worker settings:" + JSON.stringify(settings))
+        log.debug("Worker settings:" + JSON.stringify(settings))
         var sessionUrlShowed = false
 
         if (error) {

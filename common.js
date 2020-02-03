@@ -33,7 +33,7 @@ module.exports = {
         }
       };
       client.get(apiClientEndpoint + "/automate/sessions/" + sessionMapping[browserId] + ".json", args, function(data, response) {
-        console.debug("Session data: " + data);
+        log.debug("Session data: " + data);
         callback(data)
       });
     } catch (e) {
@@ -42,7 +42,7 @@ module.exports = {
   },
   updateBuildName: function(buildId, originalBuildName, results, config) {
     try {
-      console.debug("Attempting build name update")
+      log.debug("Attempting build name update")
       apiClientEndpoint = config.browserStack.apiClientEndpoint
       var client = new RestClient();
       var newBuildName
@@ -79,11 +79,10 @@ module.exports = {
       };
 
       client.put(apiClientEndpoint + "/automate/builds/" + buildId + ".json", args, function(data, response) {
-        console.debug("Updated build data: " + JSON.stringify(data));
-        //callback(data)
+        log.debug("Updated build data: " + JSON.stringify(data));
       });
 
-      console.debug("Exiting updateBuildName function")
+      log.debug("Exiting updateBuildName function")
 
     } catch (e) {
       log.debug('Browserstack reporter module update build name function encountered issues.\nError message: ' + e.message + '\nStacktrace: ' + e.stack)
