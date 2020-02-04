@@ -277,12 +277,11 @@ var BrowserStackBrowser = function(
 
     log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout)
     self.kill(function() {
-    // disabled BrowserStack retries on session timeouts
-    //  if (retryLimit--) {
-    //    self.start(previousUrl)
-    //  } else {
+      if (retryLimit--) {
+        self.start(previousUrl)
+      } else {
         emitter.emit('browser_process_failure', self)
-    //  }
+      }
     })
   }
 }
