@@ -175,13 +175,14 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
 
         if (typeof buildId === 'undefined') {
           log.debug('build id is undefined ')
+
           common.getSessionDetails(log, browserstackClient, sessionMapping, browserId, config, function(sessionObj) {
             log.debug("Response session object: " + sessionObj)
             browserUrl = sessionObj['automation_session']['browser_url']
             if (typeof browserUrl !== 'undefined') {
               buildId = browserUrl.split('/').slice(-3)[0]
               var originalBuildName = config.browserStack.build
-              common.updateBuildName(buildId, originalBuildName, undefined, config)
+            //  common.updateBuildName(buildId, originalBuildName, undefined, config)
             }
           })
         }

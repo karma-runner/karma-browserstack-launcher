@@ -4,7 +4,7 @@ const browserstack = require('browserstack-local')
 const workerManager = require('./worker-manager')
 const BrowserStackReporter = require('./browserstack-reporter')
 var common = require("./common")
-
+const buildStartTime = new Date().toISOString()
 var createBrowserStackTunnel = function(logger, config, emitter) {
   const log = logger.create('launcher.browserstack')
   const bsConfig = config.browserStack || {}
@@ -121,9 +121,7 @@ var BrowserStackBrowser = function(
   var captureTimeoutId
   var retryLimit = bsConfig.retryLimit || 3
   var previousUrl = null
-
   this.start = function(url) {
-    log.debug("Starting session on URL endpoint: " + url)
     url = url || previousUrl
     previousUrl = url
 
@@ -143,13 +141,13 @@ var BrowserStackBrowser = function(
       },
       bsConfig
     )
-    log.debug("Global settings:" + JSON.stringify(globalSettings))
-    log.debug("ARGS:" + JSON.stringify(args))
+
     // TODO(vojta): handle non os/browser/version
     if(args.real_mobile === true && args.os.toLowerCase() === 'ios' && url.toLowerCase().includes('localhost')){
       url = url.replace('localhost', 'bs-local.com')
       previousUrl = url
     }
+    globalSettings.build += ' ' + buildStartTime
     var settings = Object.assign({
         url: url + '?id=' + id,
         'browserstack.tunnel': true
@@ -160,7 +158,6 @@ var BrowserStackBrowser = function(
 
     tunnel.then(function() {
       client.createWorker(settings, function(error, worker) {
-        log.debug("Worker settings:" + JSON.stringify(settings))
         var sessionUrlShowed = false
 
         if (error) {
@@ -280,11 +277,12 @@ var BrowserStackBrowser = function(
 
     log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout)
     self.kill(function() {
-      if (retryLimit--) {
-        self.start(previousUrl)
-      } else {
+    // disabled BrowserStack retries on session timeouts
+    //  if (retryLimit--) {
+    //    self.start(previousUrl)
+    //  } else {
         emitter.emit('browser_process_failure', self)
-      }
+    //  }
     })
   }
 }
