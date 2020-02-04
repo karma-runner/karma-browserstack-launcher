@@ -10,13 +10,14 @@
 
 ## Installation
 
-The easiest way is to keep `karma-browserstack-launcher` as a devDependency in your `package.json`. Just run,
+The easiest way is to keep `karma-browserstack-launcher` as a devDependency in your `package.json`.
+Currently this branch 'reporting_enhancements' is not merged into master and is not available on npm.
+To install this version ensure you have your Karma project and this version of the Karma Browserstack launcher (https://github.com/samirans89/karma-browserstack-launcher/tree/reporting_enhancements) cloned under the same parent directory.
+Post that just run,
 
 ```bash
-$ npm install karma-browserstack-launcher --save-dev
+$ npm install ../karma-browserstack-launcher
 ```
-
-and it will be added automatically.
 
 
 ## Configuration
@@ -31,24 +32,46 @@ module.exports = function(config) {
       accessKey: '007'
     },
 
-    // define browsers
+    // define BrowserStack browsers
     customLaunchers: {
       bs_firefox_mac: {
         base: 'BrowserStack',
         browser: 'firefox',
-        browser_version: '21.0',
+        browser_version: '70.0',
         os: 'OS X',
-        os_version: 'Mountain Lion'
+        os_version: 'High Sierra',
+        forcelocal: true
       },
-      bs_iphone5: {
+      bs_pixel: {
         base: 'BrowserStack',
-        device: 'iPhone 5',
-        os: 'ios',
-        os_version: '6.0'
+        device: 'Google Pixel',
+        real_mobile: true,
+        os: 'Android',
+        os_version: '8.0'
+      },
+      bs_iphone8: {
+        base: 'BrowserStack',
+        device: 'iPhone 8',
+        real_mobile: true,
+        os: 'iOS',
+        os_version: '11.0'
+      },
+      bs_chrome_win10: {
+        base: 'BrowserStack',
+        browser: 'chrome',
+        browser_version: '79',
+        os: 'Windows',
+        os_version: '10'
+      },
+      bs_ie_win81: {
+        base: 'BrowserStack',
+        browser: 'IE',
+        browser_version: '11',
+        os: 'Windows',
+        os_version: '8.1'
       }
     },
-
-    browsers: ['bs_firefox_mac', 'bs_iphone5']
+    browsers: ['bs_firefox_mac', 'bs_pixel', 'bs_iphone8', 'bs_chrome_win10', 'bs_ie_win81'],
   })
 }
 ```
@@ -76,7 +99,7 @@ module.exports = function(config) {
 ### Per browser options
 
 - `device` name of the device
-- `real_mobile` or `realMobile` allows the session to run on a real mobile device instead of an emulator / simulator (optional, defaults to `false`)
+- `real_mobile` or `realMobile` is required to run on a real mobile device
 - `browser` name of the browser
 - `browser_version` version of the browser
 - `os` which platform ?
@@ -103,38 +126,6 @@ module.exports = function(config) {
 }
 ```
 
-### Browserstack iOS simulators
-
-By default, your Selenium and JS tests will run on real iOS devices on BrowserStack. Since we are in the implementation phase, we are still working on a few things, such as adding more devices, ability to test on local URLs, etc.
-
-In case your tests are facing any issues on real iOS devices, we also provide iOS simulators where you can run your automated tests smoothly.
-
-To access our iOS simulators, use the following capabilities:
-
-```js
-customLaunchers: {
-  iPad_3: {
-    real_mobile: false,
-    device: 'iPad 3rd (6.0)',
-    os: 'ios',
-    'os_version': '6.0',
-    'browser_version': null,
-    browser: 'Mobile Safari'
-  }
-}
-```
-
-List of iOS simulators you can test on:
-
-- `device: 'iPad 3rd', 'os_version': '5.1'`
-- `device: 'iPad 3rd (6.0)', 'os_version': '6.0'`
-- `device: 'iPad Mini', 'os_version': '7.0'`
-- `device: 'iPad 4th', 'os_version': '7.0'`
-- `device: 'iPhone 4S', 'os_version': '5.1'`
-- `device: 'iPhone 4S (6.0)', 'os_version': '6.0'`
-- `device: 'iPhone 5', 'os_version': '6.0'`
-- `device: 'iPhone 5S', 'os_version': '7.0'`
-
 ### CI/CD Build Environment Variables
 
 Many CI/CD systems will make the name or ID of the currently running build available via an environment variable. The follow environment variables below are supported by default:
@@ -158,4 +149,4 @@ For more information on Karma see the [homepage](http://karma-runner.github.io).
 
 ----
 
-Check out sample code working with karma-browserstack-launcher [here](https://github.com/browserstack/karma-browserstack-example).
+Check out sample code working with karma-browserstack-launcher [here](https://github.com/samirans89/karma-browserstack-launcher/tree/reporting_enhancements).
