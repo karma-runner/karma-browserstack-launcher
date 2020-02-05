@@ -7,7 +7,7 @@ var common = require('./common')
 const buildStartTime = new Date().toISOString()
 var client, browserId
 
-var createBrowserStackTunnel = function(logger, config, emitter) {
+var createBrowserStackTunnel = function (logger, config, emitter) {
   const log = logger.create('launcher.browserstack')
   const bsConfig = config.browserStack || {}
   if (bsConfig.startTunnel === false) {
@@ -22,14 +22,14 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
   const deferred = Q.defer()
 
   log.debug('Starting BrowserStackLocal')
-  bsLocal.start(bsLocalArgs, function() {
+  bsLocal.start(bsLocalArgs, function () {
     log.debug('Started BrowserStackLocal')
     deferred.resolve()
   })
 
-  emitter.on('exit', function(done) {
+  emitter.on('exit', function (done) {
     log.debug('Shutting down BrowserStackLocal')
-    bsLocal.stop(function() {
+    bsLocal.stop(function () {
       log.debug('Stopped BrowserStackLocal')
       done()
     })
@@ -38,7 +38,7 @@ var createBrowserStackTunnel = function(logger, config, emitter) {
   return deferred.promise
 }
 
-var createBrowserStackClient = function( /* config.browserStack */ config, /* BrowserStack:sessionMapping */ sessionMapping) {
+var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */sessionMapping) {
   var env = process.env
   config = config || {}
   var options = {
@@ -48,8 +48,8 @@ var createBrowserStackClient = function( /* config.browserStack */ config, /* Br
 
   if (config.proxyHost && config.proxyPort) {
     config.proxyProtocol = config.proxyProtocol || 'http'
-    var proxyAuth = (config.proxyUser && config.proxyPass) ?
-      (encodeURIComponent(config.proxyUser) + ':' + encodeURIComponent(config.proxyPass) + '@') : ''
+    var proxyAuth = (config.proxyUser && config.proxyPass)
+      ? (encodeURIComponent(config.proxyUser) + ':' + encodeURIComponent(config.proxyPass) + '@') : ''
     options.proxy = config.proxyProtocol + '://' + proxyAuth + config.proxyHost + ':' + config.proxyPort
   }
 
@@ -68,7 +68,7 @@ var createBrowserStackClient = function( /* config.browserStack */ config, /* Br
   var pollingTimeout = config.pollingTimeout || 1000
 
   if (!workerManager.isPolling) {
-    workerManager.startPolling(client, pollingTimeout, function(err) {
+    workerManager.startPolling(client, pollingTimeout, function (err) {
       if (err) {
         console.error(err)
       }
@@ -78,7 +78,7 @@ var createBrowserStackClient = function( /* config.browserStack */ config, /* Br
   return client
 }
 
-var formatError = function(error) {
+var formatError = function (error) {
   if (error.message === 'Validation Failed') {
     return '  Validation Failed: you probably misconfigured the browser ' +
       'or given browser is not available.'
@@ -87,7 +87,7 @@ var formatError = function(error) {
   return error.toString()
 }
 
-var BrowserStackBrowser = function(
+var BrowserStackBrowser = function (
   id, emitter, args, logger,
   /* config */
   config,
@@ -122,24 +122,24 @@ var BrowserStackBrowser = function(
   var captureTimeoutId
   var retryLimit = bsConfig.retryLimit || 3
   var previousUrl = null
-  this.start = function(url) {
+  this.start = function (url) {
     url = url || previousUrl
     previousUrl = url
 
     var globalSettings = Object.assign({
-        timeout: 300,
-        name: 'Karma test',
-        build: process.env.BUILD_NUMBER ||
-          process.env.BUILD_TAG ||
-          process.env.CI_BUILD_NUMBER ||
-          process.env.CI_BUILD_TAG ||
-          process.env.TRAVIS_BUILD_NUMBER ||
-          process.env.CIRCLE_BUILD_NUM ||
-          process.env.DRONE_BUILD_NUMBER || null,
-        browser_version: args.version || 'latest',
-        video: true
-      },
-      bsConfig
+      timeout: 300,
+      name: 'Karma test',
+      build: process.env.BUILD_NUMBER ||
+      process.env.BUILD_TAG ||
+      process.env.CI_BUILD_NUMBER ||
+      process.env.CI_BUILD_TAG ||
+      process.env.TRAVIS_BUILD_NUMBER ||
+      process.env.CIRCLE_BUILD_NUM ||
+      process.env.DRONE_BUILD_NUMBER || null,
+      browser_version: args.version || 'latest',
+      video: true
+    },
+    bsConfig
     )
 
     if (args.real_mobile === true && args.os.toLowerCase() === 'ios' && url.toLowerCase().includes('localhost')) {
@@ -148,59 +148,61 @@ var BrowserStackBrowser = function(
     }
     globalSettings.build += ' ' + buildStartTime
     var settings = Object.assign({
-        url: url + '?id=' + id,
-        'browserstack.tunnel': true
-      },
-      globalSettings,
-      args
+      url: url + '?id=' + id,
+      'browserstack.tunnel': true
+    },
+    globalSettings,
+    args
     )
 
-    tunnel.then(function() {
+    tunnel.then(function () {
       client.createWorker(settings, function (error, worker) {
-      var sessionUrlShowed = false
-      if (error) {
-        log.error('Can not start %s\n  %s', browserName, formatError(error))
-        return emitter.emit('browser_process_failure', self)
-      }
-
-      workerId = worker.id
-      alreadyKilling = null
-      worker = workerManager.registerWorker(worker)
-      worker.on('status', function (status) {
-        // TODO(vojta): show immediately in createClient callback once this gets fixed:
-        // https://github.com/browserstack/api/issues/10
-        if (!sessionUrlShowed) {
-          log.info('%s session at %s', browserName, worker.browser_url)
-          sessionMapping[self.id] = worker.browser_url.split('/').slice(-1)[0]
-          browserId = self.id
-          sessionUrlShowed = true
+        var sessionUrlShowed = false
+        if (error) {
+          log.error('Can not start %s\n  %s', browserName, formatError(error))
+          return emitter.emit('browser_process_failure', self)
         }
 
-        switch (status) {
-          case 'running':
-            log.debug('%s job started with id %s', browserName, workerId)
-            if (captureTimeout && !captured) {
-              captureTimeoutId = setTimeout(self._onTimeout, captureTimeout)
-            }
-            break
+        workerId = worker.id
+        alreadyKilling = null
 
-          case 'queue':
-            log.debug('%s job with id %s in queue.', browserName, workerId)
-            break
+        worker = workerManager.registerWorker(worker)
+        worker.on('status', function (status) {
+          // TODO(vojta): show immediately in createClient callback once this gets fixed:
+          // https://github.com/browserstack/api/issues/10
+          if (!sessionUrlShowed) {
+            log.info('%s session at %s', browserName, worker.browser_url)
+            sessionMapping[self.id] = worker.browser_url.split('/').slice(-1)[0]
+            browserId = self.id
+            sessionUrlShowed = true
+          }
 
-          case 'delete':
-            log.debug('%s job with id %s has been deleted.', browserName, workerId)
-            break
+          switch (status) {
+            case 'running':
+              log.debug('%s job started with id %s', browserName, workerId)
+
+              if (captureTimeout && !captured) {
+                captureTimeoutId = setTimeout(self._onTimeout, captureTimeout)
+              }
+              break
+
+            case 'queue':
+              log.debug('%s job with id %s in queue.', browserName, workerId)
+              break
+
+            case 'delete':
+              log.debug('%s job with id %s has been deleted.', browserName, workerId)
+              break
           }
         })
       })
-    }).catch(function() {
+    }).catch(function () {
       emitter.emit('browser_process_failure', self)
-      })
+    })
   }
 
-  this.kill = function(done) {
-    var allDone = function() {
+  this.kill = function (done) {
+    var allDone = function () {
       self._done()
       if (done) {
         done()
@@ -231,15 +233,15 @@ var BrowserStackBrowser = function(
     return alreadyKilling.promise.then(allDone)
   }
 
-  this.forceKill = function() {
+  this.forceKill = function () {
     var self = this
 
-    return Q.promise(function(resolve) {
+    return Q.promise(function (resolve) {
       self.kill(resolve)
     })
   }
 
-  this.markCaptured = function() {
+  this.markCaptured = function () {
     captured = true
 
     if (captureTimeoutId) {
@@ -248,15 +250,15 @@ var BrowserStackBrowser = function(
     }
   }
 
-  this.isCaptured = function() {
+  this.isCaptured = function () {
     return captured
   }
 
-  this.toString = function() {
+  this.toString = function () {
     return this.name
   }
 
-  this._onTimeout = function() {
+  this._onTimeout = function () {
     if (captured) {
       return
     }
@@ -268,7 +270,7 @@ var BrowserStackBrowser = function(
     }
 
     log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout)
-    self.kill(function() {
+    self.kill(function () {
       if (retryLimit--) {
         self.start(previousUrl)
       } else {
