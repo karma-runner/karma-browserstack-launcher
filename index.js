@@ -140,12 +140,12 @@ var BrowserStackBrowser = function (
       video: true
     },
     bsConfig
-  )
+    )
 
-  if (args.real_mobile === true && args.os.toLowerCase() === 'ios' && url.toLowerCase().includes('localhost')) {
-    url = url.replace('localhost', 'bs-local.com')
-    previousUrl = url
-  }
+    if (args.real_mobile === true && args.os.toLowerCase() === 'ios' && url.toLowerCase().includes('localhost')) {
+      url = url.replace('localhost', 'bs-local.com')
+      previousUrl = url
+    }
     globalSettings.build += ' ' + buildStartTime
     var settings = Object.assign({
       url: url + '?id=' + id,
@@ -153,21 +153,21 @@ var BrowserStackBrowser = function (
     },
     globalSettings,
     args
-  )
+    )
 
-  tunnel.then(function() {
-    client.createWorker(settings, function(error, worker) {
-      var sessionUrlShowed = false
-      if (error) {
-        log.error('Can not start %s\n  %s', browserName, formatError(error))
-        return emitter.emit('browser_process_failure', self)
-      }
+    tunnel.then(function () {
+      client.createWorker(settings, function (error, worker) {
+        var sessionUrlShowed = false
+        if (error) {
+          log.error('Can not start %s\n  %s', browserName, formatError(error))
+          return emitter.emit('browser_process_failure', self)
+        }
 
-      workerId = worker.id
-      alreadyKilling = null
+        workerId = worker.id
+        alreadyKilling = null
 
-      worker = workerManager.registerWorker(worker)
-      worker.on('status', function(status) {
+        worker = workerManager.registerWorker(worker)
+        worker.on('status', function (status) {
           // TODO(vojta): show immediately in createClient callback once this gets fixed:
           // https://github.com/browserstack/api/issues/10
           if (!sessionUrlShowed) {
@@ -214,7 +214,7 @@ var BrowserStackBrowser = function (
 
       if (workerId) {
         log.debug('Killing %s (worker %s).', browserName, workerId)
-        client.terminateWorker(workerId, function() {
+        client.terminateWorker(workerId, function () {
           log.debug('%s (worker %s) successfully killed.', browserName, workerId)
 
           if (captureTimeoutId) {
@@ -265,7 +265,6 @@ var BrowserStackBrowser = function (
     try {
       var browserstackClient = api.createAutomateClient(sessionMapping.credentials)
       common.updateStatusSession(log, browserstackClient, sessionMapping, browserId, 'Failed', browserName + ' has not captured in ' + captureTimeout + ' ms, killing.', 'Session Error: ' + browserName + ' capture timed out.')
-
     } catch (e) {
       log.debug('Browserstack update session status on timeout encountered issues. Continuing with further test execution...\nError message: ' + e.message + '\nStacktrace: ' + e.stack)
     }
