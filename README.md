@@ -26,7 +26,7 @@ and it will be added automatically.
 module.exports = function(config) {
   config.set({
     // global config of your BrowserStack account
-    browserStack: {
+s    browserStack: {
       username: 'jamesbond',
       accessKey: '007'
     },
