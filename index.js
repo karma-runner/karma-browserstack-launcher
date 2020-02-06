@@ -146,6 +146,11 @@ var BrowserStackBrowser = function (
       url = url.replace('localhost', 'bs-local.com')
       previousUrl = url
     }
+
+    if (globalSettings.build === null || typeof globalSettings.build === 'undefined') {
+      globalSettings.build = 'Karma build'
+    }
+
     globalSettings.build += ' ' + buildStartTime
     var settings = Object.assign({
       url: url + '?id=' + id,

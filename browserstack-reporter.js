@@ -16,6 +16,7 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
 
     this.onRunStart = function(browsers) {
       // implement this function if you want to perform custom actions post the overall test batch run has started
+
     };
 
     this.onBrowserStart = function(browser) {
@@ -72,6 +73,7 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
     this.specFailure = this.specSkipped = function(browser, result) {
       try {
         var browserId = browser.launchId || browser.id
+        log.debug('Spec Failure:' + JSON.stringify(result))
         if (browserId in sessionMapping) {
           existingObj = suiteResults.find(o => o.browserId === browserId);
           if (typeof existingObj === 'undefined') {
@@ -98,7 +100,6 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
 
     this.onSpecComplete = function(browser, result) {
       var browserId = browser.launchId || browser.id
-      log.debug("Result object on spec complete:\n" + JSON.stringify(result, null, 2))
       if (result.skipped) {
         this.specSkipped(browser, result);
       } else if (result.success) {
@@ -113,9 +114,21 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
       // implement this function if you want to perform custom actions post test run completion
       try {
         log.debug("Test run completed\n" + JSON.stringify(results))
-        if (typeof buildId !== undefined) {
-          var originalBuildName = config.browserStack.build
-          common.updateBuildName(buildId, originalBuildName, results, config)
+        var browserId = browsersCollection.browsers[0].id
+
+        if (typeof buildId === 'undefined') {
+          var browserstackClient = Browserstack.createAutomateClient(sessionMapping.credentials)
+          common.getSessionDetails(log, browserstackClient, sessionMapping, browserId, config, function(sessionObj) {
+            browserUrl = sessionObj['automation_session']['browser_url']
+            if (typeof browserUrl !== 'undefined') {
+              buildId = browserUrl.split('/').slice(-3)[0]
+              var originalBuildName = config.browserStack.build
+              if (typeof buildId !== undefined || buildId != undefined) {
+                var originalBuildName = config.browserStack.build
+                common.updateBuildName(buildId, originalBuildName, results, config)
+              }
+            }
+          })
         }
       } catch (e) {
         log.debug('onRunComplete: Browserstack reporter module encountered issues.\nError message: ' + e.message + '\nStacktrace: ' + e.stack)
@@ -171,20 +184,6 @@ var BrowserStackReporter = function(logger, /* BrowserStack:sessionMapping */ se
           var reason = 'Suite: ' + errorObjRecord[1]['suite'] + ', Error log: ' + errorObjRecord[1]['log']
           common.updateStatusSession(log, browserstackClient, sessionMapping, browserId, errorObjRecord[1].apiStatus, reason, errorObjRecord[1]['suite'])
           removeFromSuiteResults(errorObjRecord[0])
-        }
-
-        if (typeof buildId === 'undefined') {
-          log.debug('build id is undefined ')
-
-          common.getSessionDetails(log, browserstackClient, sessionMapping, browserId, config, function(sessionObj) {
-            log.debug("Response session object: " + sessionObj)
-            browserUrl = sessionObj['automation_session']['browser_url']
-            if (typeof browserUrl !== 'undefined') {
-              buildId = browserUrl.split('/').slice(-3)[0]
-              var originalBuildName = config.browserStack.build
-            //  common.updateBuildName(buildId, originalBuildName, undefined, config)
-            }
-          })
         }
       } catch (e) {
         log.debug('Browserstack reporter module encountered issues.\nError message: ' + e.message + '\nStacktrace: ' + e.stack)
