@@ -7,7 +7,7 @@ var BrowserStackReporter = function (baseReporterDecorator, logger, /* BrowserSt
     var suiteResults = []
     var buildId
     var allMessages = []
-    baseReporterDecorator(this);
+    baseReporterDecorator(this)
     var callWhenFinished = function () {}
 
     var exitIfAllFinished = function () {
@@ -151,8 +151,8 @@ var BrowserStackReporter = function (baseReporterDecorator, logger, /* BrowserSt
       })
     }
 
-    this.adapters = [function(msg) {
-      allMessages.push(msg);
+    this.adapters = [function (msg) {
+      allMessages.push(msg)
     }]
 
     this.onBrowserComplete = function (browser) {
