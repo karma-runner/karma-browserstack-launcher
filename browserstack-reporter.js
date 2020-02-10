@@ -129,7 +129,6 @@ var BrowserStackReporter = function (baseReporterDecorator, logger, /* BrowserSt
           })
         }
         allMessages = []
-        // console.log("Console logs for the build:\n" + allMessages.join('<br />'))
       } catch (e) {
         log.debug('onRunComplete: Browserstack reporter module encountered issues.\nError message: ' + e.message + '\nStacktrace: ' + e.stack)
       }
@@ -154,8 +153,6 @@ var BrowserStackReporter = function (baseReporterDecorator, logger, /* BrowserSt
 
     this.adapters = [function(msg) {
       allMessages.push(msg);
-      //console.log('Hello browser console: ' + msg)
-      //process.stdout.write.bind(process.stdout)(msg + "rn");
     }]
 
     this.onBrowserComplete = function (browser) {
@@ -172,7 +169,7 @@ var BrowserStackReporter = function (baseReporterDecorator, logger, /* BrowserSt
           } else if (typeof errorObjRecord[1] === 'undefined') {
             var passedObjRecord = findSpecObjectRecords(browserId, 'Passed')
             if (typeof passedObjRecord[1] !== 'undefined') {
-              reason = 'Suite: ' + passedObjRecord[1]['suite'] + ', Specs run: ' + JSON.stringify(passedObjRecord[1]['specs'] + ', Browser console logs:' + allMessages)
+              reason = 'Suite: ' + passedObjRecord[1]['suite'] + ', Specs run: ' + JSON.stringify(passedObjRecord[1]['specs'])
               common.updateStatusSession(log, browserstackClient, sessionMapping, browserId, passedObjRecord[1].apiStatus, reason, passedObjRecord[1]['suite'])
               removeFromSuiteResults(passedObjRecord[0])
               allMessages = []
