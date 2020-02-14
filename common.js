@@ -1,5 +1,4 @@
 var RestClient = require('node-rest-client').Client
-var base64js = require('base64-js')
 
 module.exports = {
   updateStatusSession: function (log, browserstackClient, sessionMapping, browserId, status, reason, sessionName) {
@@ -17,11 +16,10 @@ module.exports = {
     try {
       var apiClientEndpoint = config.browserStack.apiClientEndpoint
       var creds = sessionMapping.credentials.username + ':' + sessionMapping.credentials.password
-      var arr = []
-      for (var i = 0; i < creds.length; i++) {
-        arr.push(creds.charCodeAt(i))
-      }
-      var encodedCreds = base64js.fromByteArray(arr)
+
+      let buff = new Buffer(creds);
+      let base64data = buff.toString('base64');
+      var encodedCreds = base64data // base64js.fromByteArray(arr)
       var client = new RestClient()
       var args = {
         data: {},
@@ -69,11 +67,11 @@ module.exports = {
         newBuildName = originalBuildName + ' started at ' + t + ' | In Progress | '
       }
       var creds = config.browserStack.username + ':' + config.browserStack.accessKey
-      var arr = []
-      for (var i = 0; i < creds.length; i++) {
-        arr.push(creds.charCodeAt(i))
-      }
-      var encodedCreds = base64js.fromByteArray(arr)
+
+      let buff = new Buffer(creds);
+      let base64data = buff.toString('base64');
+      var encodedCreds = base64data
+      // var encodedCreds = base64js.fromByteArray(arr)
       var args = {
         data: {
           name: newBuildName
