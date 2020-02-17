@@ -40,6 +40,7 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
 
 var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */sessionMapping) {
   var env = process.env
+  console.log("Env BStack Username : " + JSON.stringify(env.BROWSERSTACK_USERNAME))
   config = config || {}
   var options = {
     username: env.BROWSERSTACK_USERNAME || env.BROWSER_STACK_USERNAME || config.username,
