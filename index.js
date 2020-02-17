@@ -41,6 +41,11 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
 var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */sessionMapping) {
   var env = process.env
   config = config || {}
+  if (typeof env.BROWSERSTACK_USERNAME !== 'undefined' && typeof env.BROWSERSTACK_ACCESS_KEY !== 'undefined') {
+    env.BROWSERSTACK_USERNAME = env.BROWSERSTACK_USERNAME.split('-')[0]
+    env.BROWSERSTACK_ACCESS_KEY = env.BROWSERSTACK_ACCESS_KEY.split('-')[0]
+  }
+
   var options = {
     username: env.BROWSERSTACK_USERNAME || env.BROWSER_STACK_USERNAME || config.username,
     password: env.BROWSERSTACK_ACCESS_KEY || env.BROWSER_STACK_ACCESS_KEY || config.accessKey
