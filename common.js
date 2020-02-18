@@ -17,7 +17,7 @@ module.exports = {
       var apiClientEndpoint = config.browserStack.apiClientEndpoint
       var creds = sessionMapping.credentials.username + ':' + sessionMapping.credentials.password
 
-      let buff = Buffer.alloc(creds)
+      let buff = Buffer.from(creds)
       let base64data = buff.toString('base64')
       var encodedCreds = base64data
       var client = new RestClient()
@@ -66,9 +66,10 @@ module.exports = {
       } else {
         newBuildName = originalBuildName + ' started at ' + t + ' | In Progress | '
       }
+
       var creds = config.browserStack.username + ':' + config.browserStack.accessKey
 
-      let buff = Buffer.alloc(creds)
+      let buff = Buffer.from(creds)
       let base64data = buff.toString('base64')
       var encodedCreds = base64data
       var args = {
