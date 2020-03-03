@@ -4,8 +4,6 @@ const browserstack = require('browserstack-local')
 const workerManager = require('./worker-manager')
 const BrowserStackReporter = require('./browserstack-reporter')
 
-var bsLocalIdentifier = ''
-
 var createBrowserStackTunnel = function (logger, config, emitter) {
   const log = logger.create('launcher.browserstack')
   const bsConfig = config.browserStack || {}
@@ -16,9 +14,8 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   const bsAccesskey = process.env.BROWSERSTACK_ACCESS_KEY || process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey
   const bsLocal = new browserstack.Local()
   var bsLocalArgs = { key: bsAccesskey }
-  const bsUseLocalIdentifier = bsConfig.useLocalIdentifier || false
-  if (bsUseLocalIdentifier === true) {
-    generateLocalIdentifier()
+  const bsLocalIdentifier = bsConfig.localIdentifier
+  if (bsLocalIdentifier) {
     bsLocalArgs.localIdentifier = bsLocalIdentifier
   }
   const deferred = Q.defer()
@@ -40,10 +37,6 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   return deferred.promise
 }
 
-var generateLocalIdentifier = function () {
-  bsLocalIdentifier = Math.random().toString(36).substring(10)
-}
-
 var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */ sessionMapping) {
   var env = process.env
 
@@ -63,8 +56,8 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
 
   if (!config.browserstack || config.browserStack.startTunnel !== false) {
     options.Local = true
-    if (config.useLocalIdentifier === true) {
-      options.LocalIdentifier = bsLocalIdentifier
+    if (config.localIdentifier) {
+      options.LocalIdentifier = config.localIdentifier
     }
   }
 
