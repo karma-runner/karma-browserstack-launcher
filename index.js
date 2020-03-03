@@ -4,7 +4,7 @@ const browserstack = require('browserstack-local')
 const workerManager = require('./worker-manager')
 const BrowserStackReporter = require('./browserstack-reporter')
 
-var bsLocalIdentifier = null;
+var bsLocalIdentifier = ''
 
 var createBrowserStackTunnel = function (logger, config, emitter) {
   const log = logger.create('launcher.browserstack')
