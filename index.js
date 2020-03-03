@@ -4,6 +4,8 @@ const browserstack = require('browserstack-local')
 const workerManager = require('./worker-manager')
 const BrowserStackReporter = require('./browserstack-reporter')
 
+var bsLocalIdentifier = null;
+
 var createBrowserStackTunnel = function (logger, config, emitter) {
   const log = logger.create('launcher.browserstack')
   const bsConfig = config.browserStack || {}
@@ -16,8 +18,8 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   var bsLocalArgs = { key: bsAccesskey }
   const bsUseLocalIdentifier = bsConfig.useLocalIdentifier || false
   if (bsUseLocalIdentifier === true) {
-    var r = Math.random().toString(36).substring(10)
-    bsLocalArgs.localIdentifier = r
+    generateLocalIdentifier()
+    bsLocalArgs.localIdentifier = bsLocalIdentifier
   }
   const deferred = Q.defer()
 
@@ -36,6 +38,10 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   })
 
   return deferred.promise
+}
+
+var generateLocalIdentifier = function () {
+  bsLocalIdentifier = Math.random().toString(36).substring(10)
 }
 
 var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */ sessionMapping) {
@@ -57,6 +63,9 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
 
   if (!config.browserstack || config.browserStack.startTunnel !== false) {
     options.Local = true
+    if (config.useLocalIdentifier === true) {
+      options.LocalIdentifier = bsLocalIdentifier
+    }
   }
 
   sessionMapping.credentials = {
