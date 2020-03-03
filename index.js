@@ -13,7 +13,12 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
 
   const bsAccesskey = process.env.BROWSERSTACK_ACCESS_KEY || process.env.BROWSER_STACK_ACCESS_KEY || bsConfig.accessKey
   const bsLocal = new browserstack.Local()
-  const bsLocalArgs = { key: bsAccesskey }
+  var bsLocalArgs = { key: bsAccesskey }
+  const bsUseLocalIdentifier = bsConfig.useLocalIdentifier || false
+  if (bsUseLocalIdentifier === true) {
+    var r = Math.random().toString(36).substring(10)
+    bsLocalArgs.localIdentifier = r
+  }
   const deferred = Q.defer()
 
   log.debug('Starting BrowserStackLocal')
