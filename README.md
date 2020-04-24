@@ -55,8 +55,8 @@ module.exports = function(config) {
 
 ### Global options
 
-- `username` your BS username, you can also use `BROWSERSTACK_USERNAME` env variable.
-- `accessKey` your BS access key, you can also use `BROWSERSTACK_ACCESS_KEY` env variable.
+- `username` your BS username, you can also use `BROWSER_STACK_USERNAME` env variable.
+- `accessKey` your BS access key, you can also use `BROWSER_STACK_ACCESS_KEY` env variable.
 - `startTunnel` do you wanna establish the BrowserStack tunnel ? (defaults to `true`)
 - `tunnelIdentifier`/`localIdentifier` in case you want to start the BrowserStack tunnel outside `karma` by setting `startTunnel` to `false`, set the identifier passed to the `-localIdentifier` option here (optional)
 - `retryLimit` how many times do you want to retry to capture the browser ? (defaults to `3`)
@@ -65,6 +65,7 @@ module.exports = function(config) {
 - `build` the BS worker build name (optional)
 - `name` the BS worker name (optional)
 - `project` the BS worker project name (optional)
+- `binaryBasePath` the BS binary base bath, you can also use `BROWSER_STACK_BINARY_BASE_PATH` env variable. This will override the default and set the base path to the BS local binary (optional)
 - `proxyHost` the host of your proxy for communicating with BrowserStack REST API and BrowserStackLocal (optional)
 - `proxyPort` the port of your proxy (optional)
 - `proxyUser` the username used for authentication with your proxy (optional)
@@ -85,7 +86,7 @@ module.exports = function(config) {
 - `name` the BS worker name (optional, defaults to global)
 - `project` the BS worker project name (optional, defaults to global)
 
-> **Note:** you can also pass through any additional options supported by browserstack. (EG. `url`, `resolution`, etc.)  
+> **Note:** you can also pass through any additional options supported by browserstack. (EG. `timezone`, `resolution`, etc.)  
 See https://www.browserstack.com/automate/capabilities for a full list of supported options.
 
 ### BrowserStack reporter

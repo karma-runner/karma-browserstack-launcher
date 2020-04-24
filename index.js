@@ -3,6 +3,9 @@ const api = require('browserstack')
 const browserstack = require('browserstack-local')
 const workerManager = require('./worker-manager')
 const BrowserStackReporter = require('./browserstack-reporter')
+var common = require('./common')
+const buildStartTime = new Date().toISOString()
+var client, browserId
 
 var createBrowserStackTunnel = function (logger, config, emitter) {
   const log = logger.create('launcher.browserstack')
@@ -37,9 +40,8 @@ var createBrowserStackTunnel = function (logger, config, emitter) {
   return deferred.promise
 }
 
-var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */ sessionMapping) {
+var createBrowserStackClient = function (/* config.browserStack */config, /* BrowserStack:sessionMapping */sessionMapping) {
   var env = process.env
-
   config = config || {}
 
   var options = {
@@ -64,8 +66,7 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
     proxy: options.proxy
   }
 
-  // TODO(vojta): handle no username/pwd
-  var client = api.createClient(options)
+  client = api.createClient(options)
 
   var pollingTimeout = config.pollingTimeout || 1000
 
@@ -91,13 +92,17 @@ var formatError = function (error) {
 
 var BrowserStackBrowser = function (
   id, emitter, args, logger,
-  /* config */ config,
-  /* browserStackTunnel */ tunnel,
-  /* browserStackClient */ client,
+  /* config */
+  config,
+  /* browserStackTunnel */
+  tunnel,
+  /* browserStackClient */
+  client,
   baseLauncherDecorator,
   captureTimeoutLauncherDecorator,
   retryLauncherDecorator,
-  /* BrowserStack:sessionMapping */ sessionMapping
+  /* BrowserStack:sessionMapping */
+  sessionMapping
 ) {
   var self = this
 
@@ -120,43 +125,47 @@ var BrowserStackBrowser = function (
   var captureTimeoutId
   var retryLimit = bsConfig.retryLimit || 3
   var previousUrl = null
-
   this.start = function (url) {
     url = url || previousUrl
     previousUrl = url
 
-    var globalSettings = Object.assign(
-      {
-        timeout: 300,
-        name: 'Karma test',
-        build: process.env.BUILD_NUMBER ||
-          process.env.BUILD_TAG ||
-          process.env.CI_BUILD_NUMBER ||
-          process.env.CI_BUILD_TAG ||
-          process.env.TRAVIS_BUILD_NUMBER ||
-          process.env.CIRCLE_BUILD_NUM ||
-          process.env.DRONE_BUILD_NUMBER || null,
-        // TODO(vojta): remove "version" (only for B-C)
-        browser_version: args.version || 'latest',
-        video: true
-      },
-      bsConfig
+    var globalSettings = Object.assign({
+      timeout: 300,
+      name: 'Karma test',
+      build: process.env.BUILD_NUMBER ||
+      process.env.BUILD_TAG ||
+      process.env.CI_BUILD_NUMBER ||
+      process.env.CI_BUILD_TAG ||
+      process.env.TRAVIS_BUILD_NUMBER ||
+      process.env.CIRCLE_BUILD_NUM ||
+      process.env.DRONE_BUILD_NUMBER || null,
+      browser_version: args.version || 'latest',
+      video: true
+    },
+    bsConfig
     )
 
-    // TODO(vojta): handle non os/browser/version
-    var settings = Object.assign(
-      {
-        url: url + '?id=' + id,
-        'browserstack.tunnel': true
-      },
-      globalSettings,
-      args
+    if (args.real_mobile === true && args.os.toLowerCase() === 'ios' && url.toLowerCase().includes('localhost')) {
+      url = url.replace('localhost', 'bs-local.com')
+      previousUrl = url
+    }
+
+    if (globalSettings.build === null || typeof globalSettings.build === 'undefined') {
+      globalSettings.build = 'Karma build'
+    }
+
+    globalSettings.build += ' ' + buildStartTime
+    var settings = Object.assign({
+      url: url + '?id=' + id,
+      'browserstack.tunnel': true
+    },
+    globalSettings,
+    args
     )
 
     tunnel.then(function () {
       client.createWorker(settings, function (error, worker) {
         var sessionUrlShowed = false
-
         if (error) {
           log.error('Can not start %s\n  %s', browserName, formatError(error))
           return emitter.emit('browser_process_failure', self)
@@ -172,6 +181,7 @@ var BrowserStackBrowser = function (
           if (!sessionUrlShowed) {
             log.info('%s session at %s', browserName, worker.browser_url)
             sessionMapping[self.id] = worker.browser_url.split('/').slice(-1)[0]
+            browserId = self.id
             sessionUrlShowed = true
           }
 
@@ -219,7 +229,6 @@ var BrowserStackBrowser = function (
             clearTimeout(captureTimeoutId)
             captureTimeoutId = null
           }
-
           workerId = null
           captured = false
           alreadyKilling.resolve()
@@ -260,6 +269,12 @@ var BrowserStackBrowser = function (
   this._onTimeout = function () {
     if (captured) {
       return
+    }
+    try {
+      var browserstackClient = api.createAutomateClient(sessionMapping.credentials)
+      common.updateStatusSession(log, browserstackClient, sessionMapping, browserId, 'Failed', browserName + ' has not captured in ' + captureTimeout + ' ms, killing.', 'Session Error: ' + browserName + ' capture timed out.')
+    } catch (e) {
+      log.debug('Browserstack update session status on timeout encountered issues. Continuing with further test execution...\nError message: ' + e.message + '\nStacktrace: ' + e.stack)
     }
 
     log.warn('%s has not captured in %d ms, killing.', browserName, captureTimeout)
