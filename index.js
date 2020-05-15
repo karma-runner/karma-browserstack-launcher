@@ -47,6 +47,20 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
     password: env.BROWSERSTACK_ACCESS_KEY || env.BROWSER_STACK_ACCESS_KEY || config.accessKey
   }
 
+  if (!options.username) {
+    console.error('No browserstack username!')
+    console.error(' Set username via env.BROWSERSTACK_USERNAME, env.BROWSER_STACK_USERNAME, or config.username.')
+  }
+
+  if (!options.password) {
+    console.error('No browserstack password!')
+    console.error(' Set username via env.BROWSERSTACK_ACCESS_KEY, env.BROWSER_STACK_ACCESS_KEY, or config.accessKey.')
+  }
+
+  if (!options.username || !options.password) {
+    process.exit(1)
+  }
+
   if (config.proxyHost && config.proxyPort) {
     config.proxyProtocol = config.proxyProtocol || 'http'
     var proxyAuth = (config.proxyUser && config.proxyPass)
@@ -64,7 +78,6 @@ var createBrowserStackClient = function (/* config.browserStack */config, /* Bro
     proxy: options.proxy
   }
 
-  // TODO(vojta): handle no username/pwd
   var client = api.createClient(options)
 
   var pollingTimeout = config.pollingTimeout || 1000
