@@ -131,7 +131,7 @@ var BrowserStackBrowser = function (
   var bsConfig = config.browserStack || {}
   var captureTimeout = config.captureTimeout || 0
   var captureTimeoutId
-  var retryLimit = bsConfig.retryLimit || 3
+  var retryLimit = (bsConfig.hasOwnProperty('retryLimit') && bsConfig.retryLimit != null) ? bsConfig.retryLimit : 3
   var previousUrl = null
 
   this.start = function (url) {
