@@ -12,3 +12,10 @@ before_script:
 
 script:
   - grunt
+
+deploy:
+  provider: npm
+  email: "$NPM_USER_EMAIL"
+  api-key: "$NPM_API_KEY"
+  on:
+    tags: true
