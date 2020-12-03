@@ -192,7 +192,7 @@ var BrowserStackBrowser = function (
             case 'running':
               log.debug('%s job started with id %s', browserName, workerId)
 
-              if (captureTimeout && !captured) {
+              if (captureTimeout && !captured && alreadyKilling == null) {
                 captureTimeoutId = setTimeout(self._onTimeout, captureTimeout)
               }
               break
